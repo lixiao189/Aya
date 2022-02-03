@@ -1,11 +1,22 @@
-# Vue 3 + Typescript + Vite
+# Aya —— 银行产品秒杀系统前端
 
-This template should help get you started developing with Vue 3 and Typescript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+该项目使用了 Vue 3 `<script setup>` 单文件组件, 查看 [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) 了解更多
 
-## Recommended IDE Setup
+## 建议的开发工具 🔧
 
-- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
+- [VSCode](https://code.visualstudio.com/) 
+- Vue Volar Extention Pack (自行在 Vs Code 应用市场内搜索)
 
-## Type Support For `.vue` Imports in TS
+## 如何运行 🚀
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's `.vue` type support plugin by running `Volar: Switch TS Plugin on/off` from VSCode command palette.
+**测试运行**
+```bash 
+yarn dev 
+```
+
+**编译成品**
+```bash
+yarn build
+```
+
+> PS: 编译后的代码因为采用了 es6 module 必须使用 `yarn preview` 命令预览
