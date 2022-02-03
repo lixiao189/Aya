@@ -5,7 +5,7 @@
 ## 建议的开发工具 🔧
 
 - [VSCode](https://code.visualstudio.com/) 
-- Vue Volar Extention Pack (自行在 Vs Code 应用市场内搜索)
+- 其余插件在用 Vs Code 打开该项目后会自动建议安装
 
 ## 如何运行 🚀
 
