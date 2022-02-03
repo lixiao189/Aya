@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import MarketIndex from "./pages/MarketIndex.vue";
+import { RouterView } from "vue-router";
 </script>
 
 <template>
-  <MarketIndex></MarketIndex>
+<RouterView></RouterView>
 </template>
 
 <style></style>
