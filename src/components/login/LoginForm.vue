@@ -1,5 +1,13 @@
 <script lang="ts" setup>
-import { NCard, NForm, NFormItem, NInput, NButton } from "naive-ui";
+import { NSpace, NCard, NForm, NFormItem, NInput, NButton } from "naive-ui";
+import Router from "../../Router";
+
+// 跳转到注册页面
+function jumpToRegisterPage() {
+  setTimeout(() => {
+    Router.push("/register");
+  }, 200);
+}
 </script>
 
 <template>
@@ -16,16 +24,23 @@ import { NCard, NForm, NFormItem, NInput, NButton } from "naive-ui";
   >
     <NForm>
       <NFormItem :label="'手机号'">
-        <NInput class="input-frame" placeholder="请输入你的手机号"/>
+        <NInput class="input-frame" placeholder="请输入你的手机号" />
       </NFormItem>
 
       <NFormItem :label="'密码'">
         <NInput class="input-frame" placeholder="请输入你的密码" />
       </NFormItem>
 
-      <div>
-        <NButton id="login-button" color="#ea0437">登录</NButton>
-      </div>
+      <NSpace id="button-container" vertical :size="'small'">
+        <NButton id="form-button" color="#ea0437">登录</NButton>
+        <NButton
+          id="form-button"
+          @click="jumpToRegisterPage"
+          color="#ea0437"
+          ghost
+          >注册</NButton
+        >
+      </NSpace>
     </NForm>
   </NCard>
 </template>
@@ -35,9 +50,12 @@ import { NCard, NForm, NFormItem, NInput, NButton } from "naive-ui";
   max-width: 350px;
 }
 
-#login-button {
+#button-container {
+  margin-top: 10px;
+}
+
+#form-button {
   width: 100%;
   margin-bottom: 18px;
-  margin-top: 10px;
 }
 </style>
