@@ -1,9 +1,7 @@
-<script lang="ts" setup>
-import HelloWorldText from "../components/HelloWorldText.vue";
-</script>
+<script lang="ts" setup></script>
 
 <template>
-  <HelloWorldText></HelloWorldText>
+  <div>Market Index</div>
 </template>
 
 <style></style>
