@@ -1,20 +1,30 @@
 <script lang="ts" setup>
 import { RouterLink } from "vue-router";
 import LoginBackground from "../components/login/LoginBackground.vue";
+import LoginForm from "../components/login/LoginForm.vue";
 </script>
 
 <template>
   <RouterLink to="/"><div id="logo-img" /></RouterLink>
   <div id="login-form"></div>
 
-  <LoginBackground />
+  <div>
+    <LoginBackground />
+    <LoginForm id="login-form" />
+  </div>
 
   <footer id="login-page-footer">
-    Copyright © 2004-2022 重嘤猛男团队 版权所有
+    Copyright © 2004-2022 三湘银行 & 重嘤猛男团队 版权所有
   </footer>
 </template>
 
 <style>
+#login-form {
+  position: absolute;
+  top: 130px;
+  left: 70%;
+}
+
 #logo-img {
   margin-top: 20px;
   margin-left: 18px;
@@ -22,11 +32,6 @@ import LoginBackground from "../components/login/LoginBackground.vue";
   height: 50px;
   background: url("/src/assets/logo.png") no-repeat;
   background-size: 294px 36px;
-}
-
-#login-form {
-  margin-top: 20px;
-  width: 500px;
 }
 
 #login-page-footer {
