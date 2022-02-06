@@ -28,7 +28,7 @@ function jumpToRegisterPage() {
       </NFormItem>
 
       <NFormItem :label="'密码'">
-        <NInput class="input-frame" placeholder="请输入你的密码" />
+        <NInput :type="'password'" class="input-frame" placeholder="请输入你的密码" />
       </NFormItem>
 
       <NSpace id="button-container" vertical :size="'small'">
