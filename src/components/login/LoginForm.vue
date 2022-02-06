@@ -14,8 +14,7 @@ function jumpToRegisterPage() {
   <NCard
     header-style="text-align: center; font-size: 20px;"
     id="login-card"
-    size="small"
-    :size="'large'"
+    :size="'small'"
     title="用户登录"
     :segmented="{
       content: true,
