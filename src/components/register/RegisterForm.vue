@@ -4,7 +4,7 @@ import { NCard, NForm, NSpace, NInput, NButton, NFormItem } from "naive-ui";
 
 <template>
   <NSpace
-    style="margin-top: 30px; margin-bottom: 80px;"
+    style="margin-top: 30px; margin-bottom: 55px;"
     :justify="'center'"
   >
     <NCard title="用户注册" :size="'large'">

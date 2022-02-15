@@ -18,6 +18,6 @@ import Footer from "../components/Footer.vue";
 #login-form {
   position: absolute;
   top: 130px;
-  left: 1000px;
+  left: 900px;
 }
 </style>
