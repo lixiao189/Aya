@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Theme from "./Theme"
+import Theme from "./config/Theme"
 import { RouterView } from "vue-router";
 import { NConfigProvider } from "naive-ui";
 </script>

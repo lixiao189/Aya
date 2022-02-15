@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { NSpace, NCard, NForm, NFormItem, NInput, NButton } from "naive-ui";
-import Router from "../../Router";
+import Router from "../../config/Router";
 
 // 跳转到注册页面
 function jumpToRegisterPage() {
