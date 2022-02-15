@@ -4,7 +4,6 @@
     "esbenp.prettier-vscode",
     "formulahendry.auto-close-tag",
     "ms-vscode.vscode-typescript-tslint-plugin",
-    "steoates.autoimport",
     "christian-kohler.path-intellisense"
   ]
 }
