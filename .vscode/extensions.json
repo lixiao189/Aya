@@ -3,7 +3,6 @@
     "misterj.vue-volar-extention-pack",
     "esbenp.prettier-vscode",
     "formulahendry.auto-close-tag",
-    "ms-vscode.vscode-typescript-tslint-plugin",
     "christian-kohler.path-intellisense"
   ]
 }
