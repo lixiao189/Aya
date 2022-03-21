@@ -6,18 +6,24 @@ import Footer from "../components/Footer.vue";
 </script>
 
 <template>
-  <Logo />
+  <div id="login-page-container">
+    <Logo />
 
-  <LoginBackground />
-  <LoginForm id="login-form" />
+    <LoginBackground />
+    <LoginForm id="login-form" />
 
-  <Footer />
+    <Footer />
+  </div>
 </template>
 
 <style>
+#login-page-container {
+  position: relative;
+}
+
 #login-form {
   position: absolute;
   top: 130px;
-  left: 900px;
+  right: 100px;
 }
 </style>

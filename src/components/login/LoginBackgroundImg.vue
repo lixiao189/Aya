@@ -5,16 +5,13 @@ const props = defineProps<{
 </script>
 
 <template>
-  <img
-    :src="src"
-    width="1420"
-    height="500"
-    alt="登录背景1"
-  />
+  <img :src="src" alt="登录背景" />
 </template>
 
 <style>
 img {
+  width: 100%;
+  height: 600px;
   display: block;
   margin: 0 auto;
 }
