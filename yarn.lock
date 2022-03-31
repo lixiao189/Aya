@@ -25,6 +25,11 @@
   resolved "https://registry.npmmirror.com/@css-render/plugin-bem/-/plugin-bem-0.15.8.tgz#02df62ec0a16f5c07687e64f1ee595e8509d04ce"
   integrity sha512-rJMFBaqZGrezs1d0vPB7hZTSkfFEgcdWxPMtLUmm9PAOioWtw+Knb9A0xU0bYazPKDo0SoNVVcd1Qd1LXD9x4Q==
 
+"@css-render/vue3-ssr@^0.15.7":
+  version "0.15.9"
+  resolved "https://registry.npmmirror.com/@css-render/vue3-ssr/-/vue3-ssr-0.15.9.tgz#59ce56a0ee417748845af9e29784235381f9b049"
+  integrity sha512-b3wvEIZYjToOEAV/oUqVtcg+MPF/iSZB9VmVF7fMAAAfvVTc2kB4TZDhGZCMkGjGZxOUm1jia7q/Z9FJnJGLKw==
+
 "@css-render/vue3-ssr@^0.15.8":
   version "0.15.8"
   resolved "https://registry.npmmirror.com/@css-render/vue3-ssr/-/vue3-ssr-0.15.8.tgz#76f36fd52c4e53b8f553e00032c378c0ae59bab3"
@@ -357,12 +362,12 @@ csstype@~3.0.5:
   resolved "https://registry.npmmirror.com/csstype/-/csstype-3.0.10.tgz#2ad3a7bed70f35b965707c092e5f30b327c290e5"
   integrity sha512-2u44ZG2OcNUO9HDp/Jl8C07x6pU/eTR3ncV91SiK3dhG9TWvRVsCoJw14Ckx5DgWkzGA3waZWO3d7pgqpUI/XA==
 
-date-fns-tz@^1.1.6:
-  version "1.2.2"
-  resolved "https://registry.npmmirror.com/date-fns-tz/-/date-fns-tz-1.2.2.tgz#89432b54ce3fa7d050a2039e997e5b6a96df35dd"
-  integrity sha512-vWtn44eEqnLbkACb7T5G5gPgKR4nY8NkNMOCyoY49NsRGHrcDmY2aysCyzDeA+u+vcDBn/w6nQqEDyouRs4m8w==
+date-fns-tz@^1.3.0:
+  version "1.3.1"
+  resolved "https://registry.npmmirror.com/date-fns-tz/-/date-fns-tz-1.3.1.tgz#88b6374e5a74cfb11ec2d2b120cfe0bc02eeb862"
+  integrity sha512-Uy+wph6HcQ0IG8TWbVyXicgDmB1zdvb0CoIknZQaxiTun4uSfxLR+8gSTC2C3KCLq+0fEIuEtJ/ORDRIn6doQw==
 
-date-fns@^2.27.0:
+date-fns@^2.28.0:
   version "2.28.0"
   resolved "https://registry.npmmirror.com/date-fns/-/date-fns-2.28.0.tgz#9570d656f5fc13143e50c975a3b6bbeb46cd08b2"
   integrity sha512-8d35hViGYx/QH0icHYCeLmsLmMUheMmTyV9Fcm6gvNwdw31yXXH+O85sOBJ+OLnLQMKZowvpKb6FgMIQjcpvQw==
@@ -698,10 +703,10 @@ mockjs@^1.1.0:
   dependencies:
     commander "*"
 
-naive-ui@^2.24.7:
-  version "2.24.7"
-  resolved "https://registry.npmmirror.com/naive-ui/-/naive-ui-2.24.7.tgz#27e7089938b1ee6e4144b9a6324defcdd026beb6"
-  integrity sha512-Kt3PxQ85c+5VO6SSaszSWfMwCzjs+pRo/GFK5fLMn5H9YRqnEXuxBSb2UI3Wt72OAisDAebCS4uAfFmyv7u5fQ==
+naive-ui@^2.27.0:
+  version "2.27.0"
+  resolved "https://registry.npmmirror.com/naive-ui/-/naive-ui-2.27.0.tgz#b7fa632069479faf2d3fc71fd305b5edf45862a3"
+  integrity sha512-g9A2uulbQKMuJpUjAyiAqBHQ4xrcbwRPdv+OS2FeNC5u/SrRWFiO64X10YDyMwQNudrwc3VVqKUrw3ZArxtFCg==
   dependencies:
     "@css-render/plugin-bem" "^0.15.8"
     "@css-render/vue3-ssr" "^0.15.8"
@@ -709,8 +714,8 @@ naive-ui@^2.24.7:
     "@types/lodash-es" "^4.17.4"
     async-validator "^4.0.1"
     css-render "^0.15.8"
-    date-fns "^2.27.0"
-    date-fns-tz "^1.1.6"
+    date-fns "^2.28.0"
+    date-fns-tz "^1.3.0"
     evtd "^0.2.3"
     highlight.js "^11.0.1"
     lodash "^4.17.21"
@@ -720,7 +725,7 @@ naive-ui@^2.24.7:
     vdirs "^0.1.7"
     vfonts "^0.0.3"
     vooks "^0.2.12"
-    vueuc "^0.4.24"
+    vueuc "^0.4.28"
 
 nanoid@^3.2.0:
   version "3.2.0"
@@ -1158,11 +1163,12 @@ vue@^3.2.25:
     "@vue/server-renderer" "3.2.29"
     "@vue/shared" "3.2.29"
 
-vueuc@^0.4.24:
-  version "0.4.24"
-  resolved "https://registry.npmmirror.com/vueuc/-/vueuc-0.4.24.tgz#16b2ef68f19f711da81bea83a7dd37d480ee2d6c"
-  integrity sha512-AocMRepM9x78GOZi6m/1WLHfarwtNbMQeFl4N/XQoft5iewUq0x2Tw/F0CbxMSrCVSKgBas47tZFabp4kYADmQ==
+vueuc@^0.4.28:
+  version "0.4.28"
+  resolved "https://registry.npmmirror.com/vueuc/-/vueuc-0.4.28.tgz#9d705bfc2eaf150921340ea5c05d2de659a2e326"
+  integrity sha512-Udr1ROwJocHIThA5G+H5qN1QEFI4pskDvl+w/2Ul2XIjaAeIuQ6ygEOKHOXRJqKX5PxcTi1QQUpb7yQWsDw7ww==
   dependencies:
+    "@css-render/vue3-ssr" "^0.15.7"
     css-render "^0.15.7"
     evtd "^0.2.2"
     resize-observer-polyfill "^1.5.1"
