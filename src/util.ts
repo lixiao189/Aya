@@ -1,5 +1,5 @@
 export function timetrans(date: number) {
-  let dateObj = new Date(date * 1000); //如果date为13位不需要乘1000
+  let dateObj = new Date(date); //如果date为13位不需要乘1000
   let Y = dateObj.getFullYear() + "-";
   let M =
     (dateObj.getMonth() + 1 < 10
