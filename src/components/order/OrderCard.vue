@@ -22,8 +22,8 @@ defineProps<{
       价格：{{ total_price }}
     </template>
     <template #action>
-      <NButton class="order-button-1">支付</NButton>
-      <NButton class="order-button-2">取消</NButton>
+      <NButton type="info" class="order-button">支付</NButton>
+      <NButton type="error" class="order-button">取消</NButton>
     </template>
 </n-card>
 </template>
@@ -33,5 +33,8 @@ defineProps<{
   width: 30vw;
   margin-top: 5vh;
   margin-left: 2vw;
+}
+.order-button{
+    margin-right: 5%;
 }
 </style>
