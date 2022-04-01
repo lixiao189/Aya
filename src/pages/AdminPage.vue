@@ -1,3 +1,11 @@
+<script lang="ts" setup>
+import { RouterView } from "vue-router";
+import Footer from "../components/Footer.vue";
+import Logo from "../components/Logo.vue";
+</script>
+
 <template>
-<div>AdminPage</div>
+  <Logo />
+  <RouterView />
+  <Footer />
 </template>
