@@ -4,7 +4,8 @@ import { NSkeleton } from "naive-ui";
 
 <template>
   <div id="main-container">
-    <NSkeleton text :repeat="5" /> <NSkeleton text style="width: 60%" />
+    <NSkeleton text :repeat="5" />
+    <NSkeleton text style="width: 60%" />
   </div>
 </template>
 

@@ -14,11 +14,11 @@ export default createRouter({
           path: "",
           component: () => import("../components/admin/Main.vue"),
         },
-        {
-          path: "login",
-          component: () => import("../components/admin/Login.vue"),
-        },
       ],
+    },
+    {
+      path: "/admin/login",
+      component: () => import("../pages/AdminLoginPage.vue"),
     },
   ],
 });
