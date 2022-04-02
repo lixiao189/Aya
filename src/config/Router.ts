@@ -20,5 +20,6 @@ export default createRouter({
       path: "/admin/login",
       component: () => import("../pages/AdminLoginPage.vue"),
     },
+    { path: "/order", component: () => import("../pages/OrderManager.vue")}
   ],
 });
