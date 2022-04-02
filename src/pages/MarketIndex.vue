@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import Logo from "../components/Logo.vue";
 import { Product } from "../define/Product";
-import MarketCard from "../components/Market/MarketCard.vue";
+import MarketCard from "../components/market/MarketCard.vue";
 import Footer from "../components/Footer.vue";
 
 import { NGrid, NGridItem } from "naive-ui";
