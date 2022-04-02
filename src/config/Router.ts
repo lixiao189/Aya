@@ -7,5 +7,6 @@ export default createRouter({
     { path: "/login", component: () => import("../pages/LoginPage.vue") },
     { path: "/register", component: () => import("../pages/RegisterPage.vue") },
     { path: "/admin", component: () => import("../pages/AdminPage.vue") },
+    { path: "/order", component: () => import("../pages/OrderManager.vue")}
   ],
 });
