@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+// 导入 util
+import { isOnline } from "../util";
+
 // 引入组件
 import Logo from "./Logo.vue";
 
@@ -28,9 +31,9 @@ function jumpToOrder() {
     <NSpace justify="space-between">
       <Logo />
       <NButton
+        v-if="isOnline"
         @click="jumpToOrder"
         color="rgb(193, 46, 50)"
-        :type="'default'"
         round
         :ghost="!isInOrderPage"
       >

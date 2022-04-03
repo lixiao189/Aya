@@ -6,5 +6,9 @@ export const serverConfig = {
       login: "/user/login",
       captcha: "/user/captcha",
     },
+
+    product: {
+      list: "/product/list",
+    },
   },
 };

@@ -8,3 +8,10 @@ export interface Product {
   price: number;
   money_rate: number;
 }
+
+// 获取商品列表的响应类型定义
+export interface ProductListResponse {
+  code: number;
+  msg: string;
+  data: Product[];
+}
