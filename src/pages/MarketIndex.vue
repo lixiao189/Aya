@@ -1,11 +1,14 @@
 <script lang="ts" setup>
-import Logo from "../components/Logo.vue";
+// 导入定义
 import { Product } from "../define/Product";
+
+// 导入组件
 import MarketCard from "../components/market/MarketCard.vue";
 import Footer from "../components/Footer.vue";
+import TopBar from "../components/TopBar.vue";
 
+// 导入第三方组件
 import { NGrid, NGridItem } from "naive-ui";
-
 import { onMounted, ref } from "vue";
 
 // 调试用的临时数据
@@ -27,9 +30,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <Logo />
+  <TopBar />
 
-  <NGrid :cols="5">
+  <NGrid cols="5 1700:6">
     <NGridItem v-for="product in productList">
       <MarketCard
         :begin-time="product['begin_time']"

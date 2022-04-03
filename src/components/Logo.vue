@@ -8,10 +8,8 @@ import { RouterLink } from "vue-router";
 
 <style>
 #logo-img {
-  margin-top: 20px;
-  margin-left: 18px;
-  width: 400px;
-  height: 50px;
+  width: 294px;
+  height: 36px;
   background: url("/src/assets/logo.png") no-repeat;
   background-size: 294px 36px;
 }
