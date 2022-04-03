@@ -21,13 +21,7 @@ onMounted(() => {
     });
   }
 });
-<<<<<<< HEAD
-
-
-</script>a
-=======
 </script>
->>>>>>> 4bfea7b276cce96ccfc1ddbdd27abd491c23c46e
 
 <template>
   <topbar />

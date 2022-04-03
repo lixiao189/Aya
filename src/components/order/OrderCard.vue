@@ -28,11 +28,11 @@ defineProps<{
 
 <style>
 .order-card {
-  width: 30vw;
+  width: 20px;
   margin-top: 5vh;
   margin-left: 2vw;
 }
 .order-button {
-  margin-right: 5%;
+  margin-right: 5%;/
 }
 </style>
