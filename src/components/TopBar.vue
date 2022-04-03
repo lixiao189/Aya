@@ -4,13 +4,38 @@ import Logo from "./Logo.vue";
 
 // 引入第三方组件
 import { NCard, NButton, NSpace } from "naive-ui";
+import { useRoute, useRouter } from "vue-router";
+import { computed } from "@vue/reactivity";
+
+// 常量
+const route = useRoute();
+const router = useRouter();
+
+// compute 变量
+const isInOrderPage = computed(() => {
+  if (route.path == "/order") return true;
+  else return false;
+});
+
+// 跳转页面
+function jumpToOrder() {
+  router.push("/order");
+}
 </script>
 
 <template>
   <NCard class="top-bar">
     <NSpace justify="space-between">
       <Logo />
-      <n-button round>个人订单</n-button>
+      <NButton
+        @click="jumpToOrder"
+        color="rgb(193, 46, 50)"
+        :type="'default'"
+        round
+        :ghost="!isInOrderPage"
+      >
+        个人订单
+      </NButton>
     </NSpace>
   </NCard>
 </template>
