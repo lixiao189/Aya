@@ -4,14 +4,14 @@ import topbar from "../components/TopBar.vue";
 import OrderCard from "../components/order/OrderCard.vue";
 import { ref } from "vue";
 import { Order } from "../define/Order";
-import { NGrid, NGridItem } from "naive-ui";
+import { NGrid, NGridItem, NSpace } from "naive-ui";
 import { onMounted } from "vue";
 
-let orderlist = ref<Order[]>([]); // 调用临时数据
+let orderList = ref<Order[]>([]); // 调用临时数据
 
 onMounted(() => {
   for (let i = 0; i < 10; i++) {
-    orderlist.value.push({
+    orderList.value.push({
       oid: "123456",
       pid: "123456",
       create_time: "yyyy-MM-dd HH:mm:ss",
@@ -31,8 +31,9 @@ onMounted(() => {
 
 <template>
   <topbar />
-  <NGrid cols="4 1450:5">
-    <NGridItem v-for="order in orderlist">
+
+  <NGrid cols="4 1600:5" :x-gap="30">
+    <NGridItem v-for="order in orderList">
       <OrderCard
         class="order-card"
         :status="order['status']"
@@ -42,6 +43,7 @@ onMounted(() => {
       />
     </NGridItem>
   </NGrid>
+
   <Footer />
 </template>
 
