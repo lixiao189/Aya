@@ -34,7 +34,7 @@ defineProps<{
 }
 
 .order-button {
-  margin-right: 5%;/
+  margin-right: 5%;
 }
 
 .order-card-container {
