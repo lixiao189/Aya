@@ -55,7 +55,7 @@ async function register() {
 </script>
 
 <template>
-  <Logo />
+  <Logo id="logo-img" />
 
   <NSpace style="margin-top: 30px; margin-bottom: 55px" :justify="'center'">
     <NCard title="用户注册" :size="'large'">
@@ -97,5 +97,9 @@ async function register() {
   margin-top: 11px;
   margin-bottom: 11px;
   width: 100%;
+}
+
+#logo-img {
+  margin: 20px;
 }
 </style>

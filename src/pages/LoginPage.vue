@@ -44,13 +44,6 @@ function jumpToRegisterPage() {
 }
 
 async function login() {
-  // debug
-  console.log(
-    loginData.value.username,
-    loginData.value.password,
-    loginData.value.captcha
-  );
-
   const loginUrl = serverConfig.urlPrefix + serverConfig.apiMap.user.login;
   const respData: LoginResponse = (await axios.post(loginUrl, loginData.value))
     .data;
@@ -80,7 +73,7 @@ async function login() {
 
 <template>
   <div id="login-page-container">
-    <Logo />
+    <Logo id="logo-img" />
 
     <LoginBackground />
     <NCard
@@ -163,5 +156,9 @@ async function login() {
 .form-button {
   width: 100%;
   margin-bottom: 18px;
+}
+
+#logo-img {
+  margin: 20px;
 }
 </style>

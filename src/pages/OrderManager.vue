@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { NSpace } from "naive-ui";
-import logo from "../components/Logo.vue";
 import Footer from "../components/Footer.vue";
 import topbar from "../components/TopBar.vue";
 import OrderCard from "../components/order/OrderCard.vue";
@@ -26,7 +24,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <logo />
   <topbar />
   <NGrid cols="4 1450:5">
     <NGridItem v-for="order in orderlist">
