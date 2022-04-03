@@ -25,7 +25,7 @@ onMounted(() => {
 });
 
 
-</script>
+</script>a
 
 <template>
   <logo/> 
