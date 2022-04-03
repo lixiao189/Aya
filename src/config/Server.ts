@@ -3,6 +3,8 @@ export const serverConfig = {
   apiMap: {
     user: {
       register: "/user/register",
+      login: "/user/login",
+      captcha: "/user/captcha",
     },
   },
 };
