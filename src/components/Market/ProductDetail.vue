@@ -4,27 +4,28 @@ import MarketDetailItem from "./ProductDetailItem.vue";
 
 // 导入第三方
 import { NModal, NButton } from "naive-ui";
-
-// 导入 vue 框架相关
 import { ref } from "vue";
 
 // 定义组件参数
-defineProps<{
-  showDetail: boolean;
+const props = defineProps<{
+  shouldShowDetail: boolean;
 }>();
 
-// 定义 ref 变量
-let show = ref(true);
+// 定义事件
+defineEmits<{
+  (e: "update:shouldShowDetail", shouldShowDetail: boolean): void;
+}>();
 </script>
 
 <template>
   <n-modal
     class="product-detail-container"
-    v-model:show="showDetail"
+    v-model:show="shouldShowDetail"
     preset="card"
-    :title="'存款产品'"
     size="huge"
+    :title="'存款产品'"
     :bordered="false"
+    @after-leave="$emit('update:shouldShowDetail', shouldShowDetail)"
   >
     <!-- 产品的细节内容 -->
     <MarketDetailItem item-name="总库存" value="1212" />

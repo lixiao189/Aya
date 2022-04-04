@@ -14,6 +14,11 @@ defineProps<{
   price: number; // 价格
   moneyRate: number; // 年利率
 }>();
+
+// 定义事件
+defineEmits<{
+  (e: "showDetail"): void; // 展示商品细节
+}>();
 </script>
 
 <template>
@@ -36,7 +41,11 @@ defineProps<{
     </div>
 
     <div class="purchase-button-container">
-      <NButton class="purchase-button" color="rgb(193, 46, 50)">
+      <NButton
+        @click="$emit('showDetail')"
+        class="purchase-button"
+        color="rgb(193, 46, 50)"
+      >
         查看详情
       </NButton>
     </div>
