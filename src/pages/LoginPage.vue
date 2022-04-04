@@ -106,9 +106,12 @@ async function login() {
             placeholder="请输入图中的验证码"
           />
         </NFormItem>
-        <NFormItem>
+
+        <!-- 验证码区域 -->
+        <NSpace>
           <img id="captcha-img" :src="captchaUrl" />
-        </NFormItem>
+          <div id="captcha-refresh">点我刷新验证码</div>
+        </NSpace>
 
         <NSpace id="button-container" vertical :size="'small'">
           <NButton @click="login" class="form-button" color="#ea0437">
@@ -137,7 +140,7 @@ async function login() {
 
 #login-form {
   position: absolute;
-  top: 145px;
+  top: 165px;
   right: 100px;
 }
 
@@ -150,7 +153,13 @@ async function login() {
 }
 
 #captcha-img {
+  width: 150px;
   height: 50px;
+}
+
+#captcha-refresh {
+  margin-top: 12px;
+  margin-left: 20px;
 }
 
 .form-button {

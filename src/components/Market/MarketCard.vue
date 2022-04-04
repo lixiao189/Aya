@@ -42,7 +42,7 @@ defineProps<{
 <style>
 .market-card {
   width: 220px;
-  margin: 30px;
+  margin: 30px auto;
   padding: 10px;
 
   border: 1px solid rgb(252, 227, 213);
