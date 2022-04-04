@@ -24,6 +24,7 @@ const router = useRouter();
 
 // 定义 ref 变量
 const productList = ref<Product[]>([]);
+const hasPriviledge = ref(false);
 
 // 获取商品列表
 async function getProducts(): Promise<Product[]> {
@@ -39,7 +40,12 @@ async function getProducts(): Promise<Product[]> {
     })
   ).data as ProductListResponse;
 
-  return respData.data;
+  if (respData.code == 0) {
+    hasPriviledge.value = true;
+    return respData.data;
+  } else {
+    return [];
+  }
 }
 
 // 页面跳转函数
@@ -79,10 +85,8 @@ onMounted(() => {
     </template>
   </n-empty>
 
-  <!-- TODO: 没有权限的提示信息 -->
-
   <!-- 登录以后展现列表 -->
-  <NGrid v-else cols="5 1700:6">
+  <NGrid v-else-if="hasPriviledge" cols="5 1700:6">
     <NGridItem v-for="product in productList">
       <MarketCard
         :begin-time="product.begin_time"
@@ -94,6 +98,15 @@ onMounted(() => {
       />
     </NGridItem>
   </NGrid>
+
+  <!-- 没有权限显示的空状态 -->
+  <n-empty
+    v-else
+    :size="'huge'"
+    id="not-online-state"
+    description="你暂时没有资格参加秒杀, 请联系我们的客服"
+  >
+  </n-empty>
 
   <Footer />
 </template>
