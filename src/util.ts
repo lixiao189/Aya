@@ -1,4 +1,5 @@
-import { computed } from "vue";
+import { NIcon } from "naive-ui";
+import { Component, computed, h } from "vue";
 import { Router } from "vue-router";
 
 /* 导出 computed 变量 */
@@ -33,8 +34,14 @@ export function timetrans(date: number) {
   return Y + M + D + h + m + s;
 }
 
+/* 延迟路由跳转 */
 export function redirect(router: Router, path: string, delay: number = 1000) {
   setTimeout(() => {
     router.push(path);
   }, delay);
+}
+
+/* 图标渲染 */
+export function renderIcon(icon: Component) {
+  return () => h(NIcon, null, { default: () => h(icon) });
 }

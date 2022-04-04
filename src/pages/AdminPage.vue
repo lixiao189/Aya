@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import Footer from "../components/Footer.vue";
+import { renderIcon } from "../util";
 import { RouterView, useRouter } from "vue-router";
 import {
   NLayout,
@@ -6,8 +8,11 @@ import {
   NLayoutHeader,
   NLayoutContent,
   NLayoutFooter,
+  NMenu,
+  NIcon,
+  MenuOption,
 } from "naive-ui";
-import Footer from "../components/Footer.vue";
+import { Home } from "@vicons/ionicons5";
 
 const router = useRouter();
 
@@ -15,14 +20,49 @@ const infoString = localStorage.getItem("admin");
 if (infoString === null) {
   router.push("/admin/login");
 }
+
+const menu: MenuOption[] = [
+  {
+    label: "主页",
+    key: "index",
+    icon: renderIcon(Home),
+  },
+  {
+    label: "目录1",
+    key: "menu1",
+    icon: renderIcon(Home),
+  },
+];
+
+function menuUpdateHandler(key: string, item: MenuOption) {
+  console.log(key);
+  console.log(item);
+}
 </script>
 
 <template>
   <div v-if="infoString !== null">
     <NLayout>
-      <NLayoutHeader bordered id="layout-header"> title </NLayoutHeader>
+      <NLayoutHeader bordered id="layout-header">
+        <h2>Admin</h2>
+      </NLayoutHeader>
       <NLayout has-sider id="layout-main">
-        <NLayoutSider bordered id="layout-sider"> Admin </NLayoutSider>
+        <NLayoutSider
+          id="layout-sider"
+          bordered
+          show-trigger
+          collapse-mode="width"
+          :collapsed-width="64"
+          :width="240"
+        >
+          <NMenu
+            :collapsed-width="64"
+            :collapsed-icon-size="22"
+            :options="menu"
+            @update:value="menuUpdateHandler"
+          >
+          </NMenu>
+        </NLayoutSider>
         <NLayout>
           <div id="layout-container">
             <NLayoutContent id="layout-content">
