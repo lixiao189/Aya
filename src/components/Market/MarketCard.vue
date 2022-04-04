@@ -1,7 +1,11 @@
 <script lang="ts" setup>
-import { NSpace, NButton } from "naive-ui";
+// 导入 util
 import { timetrans } from "../../util";
 
+// 导入第三方组件
+import { NSpace, NButton } from "naive-ui";
+
+// 定义属性
 defineProps<{
   beginTime: number; // 秒杀开始时间
   endTime: number; // 秒杀结束时间
@@ -33,7 +37,7 @@ defineProps<{
 
     <div class="purchase-button-container">
       <NButton class="purchase-button" color="rgb(193, 46, 50)">
-        立即抢购
+        查看详情
       </NButton>
     </div>
   </NSpace>
