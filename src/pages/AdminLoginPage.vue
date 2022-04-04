@@ -2,7 +2,7 @@
 import Footer from "../components/Footer.vue";
 import Logo from "../components/Logo.vue";
 import LoginForm from "../components/admin/LoginForm.vue";
-import { NMessageProvider, useMessage } from "naive-ui";
+import { useMessage } from "naive-ui";
 import { redirect } from "../util";
 import { useRouter } from "vue-router";
 
