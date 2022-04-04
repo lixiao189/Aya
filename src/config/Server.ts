@@ -9,5 +9,8 @@ export const serverConfig = {
     admin: {
       login: "/admin/login",
     },
+    product: {
+      list: "/product/list",
+    },
   },
 };
