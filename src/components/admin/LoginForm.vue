@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { serverConfig } from "../../config/Server";
 import { AdminLoginResponse } from "../../define/AdminLogin";
+import { AdminInfo } from "../../define/Admin";
 import {
   NCard,
   NForm,
@@ -49,7 +50,17 @@ async function onSubmit() {
   }
   console.log(loginResponse);
 
-  // TODO
+  if (!loginResponse.code) {
+    let adminInfo: AdminInfo = {
+      token: loginResponse.data.token,
+      id: loginResponse.data.profile.admin_id,
+      role: loginResponse.data.profile.role,
+    };
+    localStorage.setItem("admin", JSON.stringify(adminInfo));
+    message.success("登录成功");
+  } else {
+    message.error("登录失败");
+  }
 }
 </script>
 
