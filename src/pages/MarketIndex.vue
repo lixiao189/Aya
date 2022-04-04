@@ -23,13 +23,17 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 
 // 定义 ref 变量
-const productList = ref<Product[]>([]);
-const hasPriviledge = ref(false);
+const productList = ref<Product[]>([]); // 产品列表
+const hasPriviledge = ref(false); // 判断是否有权限进行活动
+const loginSuccess = ref(false); // 判断登录是否成功
 
 // 获取商品列表
 async function getProducts(): Promise<Product[]> {
   const token = localStorage.getItem("token");
-  if (token == null) return [];
+  if (token == null) {
+    loginSuccess.value = false;
+    return [];
+  }
 
   const getProductsUrl =
     serverConfig.urlPrefix + serverConfig.apiMap.product.list;
@@ -42,10 +46,19 @@ async function getProducts(): Promise<Product[]> {
 
   if (respData.code == 0) {
     hasPriviledge.value = true;
+    loginSuccess.value = true;
     return respData.data;
+  } else if (respData.code == 1) {
+    // 登录成功但是没有权限
+    hasPriviledge.value = false;
+    loginSuccess.value = true;
   } else {
-    return [];
+    // 登录没有成功
+    hasPriviledge.value = false;
+    loginSuccess.value = false;
   }
+
+  return [];
 }
 
 // 页面跳转函数
@@ -66,7 +79,7 @@ onMounted(() => {
 
   <!-- 没有登录显示的空状态 -->
   <n-empty
-    v-if="!isOnline"
+    v-if="!loginSuccess"
     :size="'huge'"
     id="not-online-state"
     description="需要登录开始秒杀"

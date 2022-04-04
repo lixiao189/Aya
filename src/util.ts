@@ -1,12 +1,13 @@
 import { computed } from "vue";
 
-// 导出 computed 变量
+/* 导出 computed 变量 */
+// 如果有 token 那么以前登录过, 判断为在线状态
 export const isOnline = computed(() => {
   if (localStorage.getItem("token") == null) return false;
   else return true;
 });
 
-// 导出函数
+/* 导出函数 */
 export function timetrans(date: number) {
   let dateObj = new Date(date); //如果date为13位不需要乘1000
   let Y = dateObj.getFullYear() + "-";
