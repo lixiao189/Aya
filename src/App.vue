@@ -2,13 +2,15 @@
 import Theme from "./config/Theme";
 
 import { RouterView } from "vue-router";
-import { NDialogProvider, NConfigProvider } from "naive-ui";
+import { NDialogProvider, NConfigProvider, NMessageProvider } from "naive-ui";
 </script>
 
 <template>
   <NConfigProvider :theme-overrides="Theme">
     <NDialogProvider>
-      <RouterView />
+      <NMessageProvider>
+        <RouterView />
+      </NMessageProvider>
     </NDialogProvider>
   </NConfigProvider>
 </template>

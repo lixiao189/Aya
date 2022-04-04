@@ -1,11 +1,18 @@
 <script lang="ts" setup>
-import { RouterView } from "vue-router";
-import Footer from "../components/Footer.vue";
-import Logo from "../components/Logo.vue";
+import { RouterView, useRouter } from "vue-router";
+// import Footer from "../components/Footer.vue";
+// import Logo from "../components/Logo.vue";
+
+const router = useRouter();
+
+const infoString = localStorage.getItem("admin");
+if (infoString === null) {
+  router.push("/admin/login");
+}
 </script>
 
 <template>
-  <Logo />
-  <RouterView />
-  <Footer />
+  <div v-if="infoString !== null">
+    <RouterView />
+  </div>
 </template>

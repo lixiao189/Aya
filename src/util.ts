@@ -1,4 +1,5 @@
 import { computed } from "vue";
+import { Router } from "vue-router";
 
 /* 导出 computed 变量 */
 // 如果有 token 那么以前登录过, 判断为在线状态
@@ -30,4 +31,10 @@ export function timetrans(date: number) {
       ? "0" + dateObj.getSeconds()
       : dateObj.getSeconds();
   return Y + M + D + h + m + s;
+}
+
+export function redirect(router: Router, path: string, delay: number = 1000) {
+  setTimeout(() => {
+    router.push(path);
+  }, delay);
 }
