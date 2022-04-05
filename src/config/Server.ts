@@ -16,5 +16,10 @@ export const serverConfig = {
       getUrl: "/product/token",
       submitOrder: "/product/kill",
     },
+    order: {
+      list: "/order/list",
+      cancel:"/order/cancel",
+      pay:"/order/pay",
+    }
   },
 };

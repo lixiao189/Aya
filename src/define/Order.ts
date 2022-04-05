@@ -6,3 +6,8 @@ export interface Order {
   purchase_number: number; //购买份数
   total_price: number; //订单总金额，单位为分
 }
+export interface OrderListResponse {
+  code: number;
+  msg: string;
+  data: Order[];
+}

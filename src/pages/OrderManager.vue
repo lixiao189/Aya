@@ -3,30 +3,85 @@ import Footer from "../components/Footer.vue";
 import topbar from "../components/TopBar.vue";
 import OrderCard from "../components/order/OrderCard.vue";
 import { ref } from "vue";
-import { Order } from "../define/Order";
-import { NGrid, NGridItem, NSpace } from "naive-ui";
+import { Order,OrderListResponse } from "../define/Order";
+import { NGrid, NGridItem, NSpace,NButton,NEmpty } from "naive-ui";
 import { onMounted } from "vue";
+import { continueStatement } from "@babel/types";
+import { useRouter } from "vue-router";
+import { serverConfig } from "../config/Server";
+import axios from "axios";
 
-let orderList = ref<Order[]>([]); // 调用临时数据
+const router = useRouter(); //使用路由
+function jumpToLogin(){
+  router.push("/login");
+}
+const loginSuccess = ref(false);
+const orderList = ref<Order[]>([]);
+
+
+//获取订单列表
+
+
+async function getOrder(): Promise<Order[]> {
+  const token = localStorage.getItem('token');
+  if (token == null){
+    loginSuccess.value = false;
+    return [];
+  }
+
+  const getOrderUrl = 
+    serverConfig.urlPrefix + serverConfig.apiMap.order.list;
+
+  const respData = (
+    await axios.get(getOrderUrl,{
+      headers: { Authorization: token },
+    })
+  ).data as OrderListResponse;
+  
+  
+  if (respData.code == 0) {
+    loginSuccess.value = true;
+    return respData.data;
+  } else {
+    // 登录没有成功
+    loginSuccess.value = false;
+  }
+  return[]
+}
+
+
 
 onMounted(() => {
-  for (let i = 0; i < 10; i++) {
-    orderList.value.push({
-      oid: "123456",
-      pid: "123456",
-      create_time: "yyyy-MM-dd HH:mm:ss",
-      status: "未支付",
-      purchase_number: 3,
-      total_price: 1000000,
-    });
-  }
+  (async () => {
+    orderList.value = await getOrder();
+  })();
 });
 </script>
 
 <template>
   <topbar />
+  <!-- 没有登录显示的空状态 -->
+  <n-empty
+    v-if="!loginSuccess"
+    :size="'huge'"
+    id="not-online-state"
+    description="需要登录开始秒杀"
+  >
+    <template #extra>
+      <n-button
+        color="rgb(193, 46, 50)"
+        round
+        id="login-button"
+        :type="'default'"
+        :size="'large'"
+        @click="jumpToLogin"
+      >
+        点我登录
+      </n-button>
+    </template>
+  </n-empty>
 
-  <NGrid cols="4 1600:5" :x-gap="30">
+  <NGrid v-else cols="4 1600:5" :x-gap="30">
     <NGridItem v-for="order in orderList">
       <OrderCard
         class="order-card"
