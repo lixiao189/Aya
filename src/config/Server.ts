@@ -14,5 +14,10 @@ export const serverConfig = {
       detail: "/product/detail",
       stock: "/product/stock",
     },
+    order: {
+      list: "/order/list",
+      cancel:"/order/cancel",
+      pay:"/order/pay",
+    }
   },
 };
