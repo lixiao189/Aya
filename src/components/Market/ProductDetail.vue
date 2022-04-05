@@ -8,16 +8,19 @@ import {
   ProductDetailResponse,
   ProductStockResponse,
   ProductOrderUrlResponse,
+  SubmitOrder,
+  SubmitOrderResponse,
 } from "../../define/Product";
 
 // 导入自定义组件
 import MarketDetailItem from "./ProductDetailItem.vue";
 
 // 导入第三方
-import { NModal, NButton, useMessage } from "naive-ui";
+import { NModal, NButton, useMessage, NInputNumber, useDialog } from "naive-ui";
 import { onMounted, ref } from "vue";
 import axios from "axios";
 import { serverConfig } from "../../config/Server";
+import { useRouter } from "vue-router";
 
 // 定义组件参数
 const props = defineProps<{
@@ -32,6 +35,7 @@ defineEmits<{
 }>();
 
 // 定义 ref 变量
+const orderNumber = ref(0);
 const productDetail = ref<ProductDetail>({
   pid: "",
   begin_time: 0,
@@ -51,6 +55,8 @@ const productDetail = ref<ProductDetail>({
 
 // 定义常量
 const message = useMessage();
+const dialog = useDialog();
+const router = useRouter();
 
 // 获取产品的详情信息
 async function getProductDetail(): Promise<ProductDetail> {
@@ -97,10 +103,13 @@ async function getOrderUrl(): Promise<string> {
   return respData.data;
 }
 
+// 生命周期函数
 onMounted(() => {
   // 需要完成 一个获取产品的详情, 商品的实时库存, 一个获取产品的秒杀 url
   (async () => {
     productDetail.value = await getProductDetail();
+
+    // TODO 在开启秒杀后获取秒杀进度
   })();
 });
 
@@ -109,13 +118,51 @@ function orderTheProduct() {
   // 判断秒杀是否在获取期限内
   if (getTimeStamp() < productDetail.value.begin_time) {
     message.error("该商品尚未开始秒杀");
+    return;
   } else if (getTimeStamp() > productDetail.value.end_time) {
     message.error("该商品秒杀已经结束");
+    return;
   }
 
   // 开始异步网络请求
   (async () => {
+    const token = localStorage.getItem("token") as string;
     const orderUrl = await getOrderUrl();
+    const submitOrderData: SubmitOrder = {
+      pid: props.pid,
+      end_time: productDetail.value.end_time,
+      purchase_number: orderNumber.value,
+      price: productDetail.value.price,
+    };
+    const submitOrderUrl =
+      serverConfig.urlPrefix +
+      serverConfig.apiMap.product.submitOrder +
+      "/" +
+      orderUrl;
+
+    const respData: SubmitOrderResponse = (
+      await axios.post(submitOrderUrl, submitOrderData, {
+        headers: { Authorization: token },
+      })
+    ).data;
+
+    if (respData.code == 0) {
+      dialog.success({
+        title: "成功",
+        content: "秒杀成功! 跳转到订单页面",
+        positiveText: "确定",
+        onPositiveClick: () => {
+          router.push("/order");
+        },
+      });
+    } else if (respData.code == 1) {
+      dialog.error({
+        title: "错误",
+        content: "商品已经卖完了",
+        positiveText: "确定",
+        onPositiveClick: () => {},
+      });
+    }
   })();
 }
 </script>
@@ -166,9 +213,16 @@ function orderTheProduct() {
     </template>
 
     <template #action>
-      <div class="purchase-button-container">
+      <NInputNumber
+        class="order-amount"
+        placeholder="请输入份数"
+        v-model:value="orderNumber"
+      >
+        <template #suffix> 份 </template>
+      </NInputNumber>
+      <div class="order-button-container">
         <NButton @click="orderTheProduct" color="rgb(193, 46, 50)">
-          <div class="purchase-button-text">我要下单</div>
+          <div class="order-button-text">我要下单</div>
         </NButton>
       </div>
     </template>
@@ -180,11 +234,15 @@ function orderTheProduct() {
   width: 500px;
 }
 
-.purchase-button-container {
+.order-button-container {
   text-align: center;
 }
 
-.purchase-button-text {
+.order-amount {
+  margin-bottom: 20px;
+}
+
+.order-button-text {
   margin: 20px 50px;
 }
 </style>

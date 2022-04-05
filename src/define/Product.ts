@@ -54,3 +54,20 @@ export interface ProductOrderUrlResponse {
   msg: string;
   data: string;
 }
+
+/* ================ 提交订单接口 ================== */
+
+// 提交订单接口请求数据格式
+export interface SubmitOrder {
+  pid: string;
+  end_time: number;
+  purchase_number: number;
+  price: number;
+}
+
+// 提交订单接口接收数据格式
+export interface SubmitOrderResponse {
+  code: number;
+  msg: string;
+  data: string;
+}

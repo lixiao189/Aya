@@ -14,6 +14,7 @@ export const serverConfig = {
       detail: "/product/detail",
       stock: "/product/stock",
       getUrl: "/product/token",
+      submitOrder: "/product/kill",
     },
   },
 };
