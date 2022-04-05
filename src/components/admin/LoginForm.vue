@@ -68,6 +68,7 @@ async function onSubmit() {
       token: loginResponse.data.token,
       id: loginResponse.data.profile.admin_id,
       role: loginResponse.data.profile.role,
+      name: formValue.value.username,
     };
     localStorage.setItem("admin", JSON.stringify(adminInfo));
     message.success("登录成功");
