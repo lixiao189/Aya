@@ -5,14 +5,14 @@ import { NSpace } from "naive-ui";
 // 定义参数
 defineProps<{
   itemName: string;
-  value: string;
+  value: string | number;
 }>();
 </script>
 
 <template>
   <NSpace justify="space-between">
     <span>{{ itemName }}: </span>
-    <span>{{ value }}</span>
+    <span>{{ String(value) }}</span>
   </NSpace>
 </template>
 
