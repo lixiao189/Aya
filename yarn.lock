@@ -84,6 +84,11 @@
   resolved "https://registry.npmmirror.com/@types/node/-/node-14.14.45.tgz#ec2dfb5566ff814d061aef7e141575aedba245cf"
   integrity sha512-DssMqTV9UnnoxDWu959sDLZzfvqCF0qDNRjaWeYSui9xkFe61kKo4l1TWNTQONpuXEm+gLMRvdlzvNHBamzmEw==
 
+"@vicons/ionicons5@^0.12.0":
+  version "0.12.0"
+  resolved "https://registry.npmmirror.com/@vicons/ionicons5/-/ionicons5-0.12.0.tgz#c39fda04420dfae3b58053faf8aaf3555253299d"
+  integrity sha512-Iy1EUVRpX0WWxeu1VIReR1zsZLMc4fqpt223czR+Rpnrwu7pt46nbnC2ycO7ItI/uqDLJxnbcMC7FujKs9IfFA==
+
 "@vitejs/plugin-vue@^2.0.0":
   version "2.1.0"
   resolved "https://registry.npmmirror.com/@vitejs/plugin-vue/-/plugin-vue-2.1.0.tgz#ddf5e0059f84f2ff649afc25ce5a59211e670542"

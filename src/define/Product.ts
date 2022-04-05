@@ -47,3 +47,27 @@ export interface ProductStockResponse {
   msg: string;
   data: number;
 }
+
+// 获取产品秒杀 URL 的接口响应
+export interface ProductOrderUrlResponse {
+  code: number;
+  msg: string;
+  data: string;
+}
+
+/* ================ 提交订单接口 ================== */
+
+// 提交订单接口请求数据格式
+export interface SubmitOrder {
+  pid: string;
+  end_time: number;
+  purchase_number: number;
+  price: number;
+}
+
+// 提交订单接口接收数据格式
+export interface SubmitOrderResponse {
+  code: number;
+  msg: string;
+  data: string;
+}

@@ -13,6 +13,8 @@ export const serverConfig = {
       list: "/product/list",
       detail: "/product/detail",
       stock: "/product/stock",
+      getUrl: "/product/token",
+      submitOrder: "/product/kill",
     },
     order: {
       list: "/order/list",
