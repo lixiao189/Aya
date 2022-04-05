@@ -1,14 +1,27 @@
 <script lang="ts" setup>
-import { NSpace, NButton } from "naive-ui";
+// 导入 util
 import { timetrans } from "../../util";
 
+// 导入第三方组件
+import { NSpace, NButton } from "naive-ui";
+
+// 定义属性
 defineProps<{
+  pid: string; // 商品 id
   beginTime: number; // 秒杀开始时间
   endTime: number; // 秒杀结束时间
   name: string; // 商品名
   stock: number; // 库存量
   price: number; // 价格
   moneyRate: number; // 年利率
+
+  targetPID: string; // 被触发的商品 id
+}>();
+
+// 定义事件
+defineEmits<{
+  (e: "showDetail"): void; // 展示商品细节
+  (e: "update:targetPID", targetPID: string): void; // 双向绑定 pid
 }>();
 </script>
 
@@ -32,8 +45,15 @@ defineProps<{
     </div>
 
     <div class="purchase-button-container">
-      <NButton class="purchase-button" color="rgb(193, 46, 50)">
-        立即抢购
+      <NButton
+        @click="
+          $emit('showDetail');
+          $emit('update:targetPID', pid);
+        "
+        class="purchase-button"
+        color="rgb(193, 46, 50)"
+      >
+        查看详情
       </NButton>
     </div>
   </NSpace>

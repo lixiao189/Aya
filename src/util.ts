@@ -10,6 +10,7 @@ export const isOnline = computed(() => {
 });
 
 /* 导出函数 */
+// 将时间戳转换成时间
 export function timetrans(date: number) {
   let dateObj = new Date(date); //如果date为13位不需要乘1000
   let Y = dateObj.getFullYear() + "-";
@@ -32,6 +33,11 @@ export function timetrans(date: number) {
       ? "0" + dateObj.getSeconds()
       : dateObj.getSeconds();
   return Y + M + D + h + m + s;
+}
+
+// 获取时间戳的函数
+export function getTimeStamp() {
+  return new Date().getTime();
 }
 
 /* 延迟路由跳转 */

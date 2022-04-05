@@ -1,7 +1,4 @@
 <script lang="ts" setup>
-// 导入 util
-import { isOnline, timetrans } from "../util";
-
 // 导入配置文件
 import { serverConfig } from "../config/Server";
 
@@ -18,6 +15,7 @@ import { NGrid, NGridItem, NEmpty, NButton } from "naive-ui";
 import { onMounted, ref } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import ProductDetail from "../components/market/ProductDetail.vue";
 
 // 使用接口
 const router = useRouter();
@@ -26,6 +24,8 @@ const router = useRouter();
 const productList = ref<Product[]>([]); // 产品列表
 const hasPriviledge = ref(false); // 判断是否有权限进行活动
 const loginSuccess = ref(false); // 判断登录是否成功
+const shouldShowDetail = ref(false); // 判断是否需要展示商品细节
+const targetPID = ref("");
 
 // 获取商品列表
 async function getProducts(): Promise<Product[]> {
@@ -102,12 +102,15 @@ onMounted(() => {
   <NGrid v-else-if="hasPriviledge" cols="5 1700:6">
     <NGridItem v-for="product in productList">
       <MarketCard
+        :pid="product.pid"
         :begin-time="product.begin_time"
         :end-time="product.end_time"
         :name="product.name"
         :stock="product.stock"
         :price="product.price"
         :money-rate="product.money_rate"
+        @show-detail="shouldShowDetail = true"
+        v-model:targetPID="targetPID"
       />
     </NGridItem>
   </NGrid>
@@ -120,6 +123,9 @@ onMounted(() => {
     description="你暂时没有资格参加秒杀, 请联系我们的客服"
   >
   </n-empty>
+
+  <!-- 产品的细节组件 -->
+  <ProductDetail :pid="targetPID" v-model:shouldShowDetail="shouldShowDetail" />
 
   <Footer />
 </template>

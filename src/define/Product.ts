@@ -15,3 +15,35 @@ export interface ProductListResponse {
   msg: string;
   data: Product[];
 }
+
+// 产品的详情信息
+export interface ProductDetail {
+  pid: string;
+  begin_time: number;
+  end_time: number;
+  name: string;
+  stock: number;
+  price: number;
+  money_rate: number;
+  purchase_limit: number;
+  incre_amount: number;
+  product_term: string;
+  risk_level: string;
+  value_date: string;
+  due_date: string;
+  settlement_method: string;
+}
+
+// 获取产品详情的响应结构的定义
+export interface ProductDetailResponse {
+  code: number;
+  msg: string;
+  data: ProductDetail;
+}
+
+// 获取产品实时库存的响应
+export interface ProductStockResponse {
+  code: number;
+  msg: string;
+  data: number;
+}
