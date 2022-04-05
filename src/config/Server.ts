@@ -6,5 +6,13 @@ export const serverConfig = {
       login: "/user/login",
       captcha: "/user/captcha",
     },
+    admin: {
+      login: "/admin/login",
+    },
+    product: {
+      list: "/product/list",
+      detail: "/product/detail",
+      stock: "/product/stock",
+    },
   },
 };
