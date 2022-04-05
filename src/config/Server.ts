@@ -13,6 +13,7 @@ export const serverConfig = {
       list: "/product/list",
       detail: "/product/detail",
       stock: "/product/stock",
+      getUrl: "/product/token",
     },
   },
 };

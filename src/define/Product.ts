@@ -47,3 +47,10 @@ export interface ProductStockResponse {
   msg: string;
   data: number;
 }
+
+// 获取产品秒杀 URL 的接口响应
+export interface ProductOrderUrlResponse {
+  code: number;
+  msg: string;
+  data: string;
+}
