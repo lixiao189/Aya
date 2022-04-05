@@ -11,6 +11,8 @@ export const serverConfig = {
     },
     product: {
       list: "/product/list",
+      detail: "/product/detail",
+      stock: "/product/stock",
     },
   },
 };
