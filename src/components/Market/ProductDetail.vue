@@ -4,11 +4,12 @@ import MarketDetailItem from "./ProductDetailItem.vue";
 
 // 导入第三方
 import { NModal, NButton } from "naive-ui";
-import { ref } from "vue";
 
 // 定义组件参数
-const props = defineProps<{
-  shouldShowDetail: boolean;
+defineProps<{
+  pid: string; // 商品 id
+
+  shouldShowDetail: boolean; // 是否弹出商品细节
 }>();
 
 // 定义事件

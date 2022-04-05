@@ -7,17 +7,21 @@ import { NSpace, NButton } from "naive-ui";
 
 // 定义属性
 defineProps<{
+  pid: string; // 商品 id
   beginTime: number; // 秒杀开始时间
   endTime: number; // 秒杀结束时间
   name: string; // 商品名
   stock: number; // 库存量
   price: number; // 价格
   moneyRate: number; // 年利率
+
+  targetPID: string; // 被触发的商品 id
 }>();
 
 // 定义事件
 defineEmits<{
   (e: "showDetail"): void; // 展示商品细节
+  (e: "update:targetPID", targetPID: string): void; // 双向绑定 pid
 }>();
 </script>
 
@@ -42,7 +46,10 @@ defineEmits<{
 
     <div class="purchase-button-container">
       <NButton
-        @click="$emit('showDetail')"
+        @click="
+          $emit('showDetail');
+          $emit('update:targetPID', pid);
+        "
         class="purchase-button"
         color="rgb(193, 46, 50)"
       >
