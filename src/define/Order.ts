@@ -11,3 +11,8 @@ export interface OrderListResponse {
   msg: string;
   data: Order[];
 }
+export interface OrderPayResponse {
+  code: number;
+  msg: string;
+  data: null;
+}
