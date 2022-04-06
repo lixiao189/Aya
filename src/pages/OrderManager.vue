@@ -85,6 +85,7 @@ onMounted(() => {
     <NGridItem v-for="order in orderList">
       <OrderCard
         class="order-card"
+        :oid="order['oid']"
         :status="order['status']"
         :create_time="order['create_time']"
         :purchase_number="order['purchase_number']"
