@@ -8,6 +8,7 @@ export default createRouter({
     { path: "/login", component: () => import("../pages/LoginPage.vue") },
     { path: "/register", component: () => import("../pages/RegisterPage.vue") },
     { path: "/order", component: () => import("../pages/OrderManager.vue") },
+    { path: "/ban", component: () => import("../pages/NoPermission.vue") },
 
     // ===================== Admin Page Router ===============================
     {
