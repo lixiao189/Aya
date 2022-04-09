@@ -20,6 +20,14 @@ export default createRouter({
           path: "",
           component: () => import("../components/admin/Main.vue"),
         },
+        {
+          path: "index",
+          component: () => import("../components/admin/Main.vue"),
+        },
+        {
+          path: "user",
+          component: () => import("../components/admin/UserAdmin.vue"),
+        },
       ],
     },
     {
