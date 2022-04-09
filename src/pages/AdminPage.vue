@@ -73,7 +73,6 @@ const menu: MenuOption[] = [
 
 function menuOptionHandler(key: string, item: MenuOption) {
   console.log(key);
-  console.log(item);
   router.push("/admin/" + key);
 }
 

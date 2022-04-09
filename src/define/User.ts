@@ -1,10 +1,16 @@
 export type User = {
   uid: string;
   username: string;
-  sex: number;
-  birthday: string;
-  working_status: number;
+  age: number;
+  sex: boolean;
+  working_status: string;
   identity_number: string;
-  is_dishonest: number;
-  is_banned: number;
+  dishonest: boolean;
+  banned: boolean;
+};
+
+export type GetUserResponse = {
+  code: number;
+  msg: string;
+  data: User[];
 };

@@ -17,16 +17,9 @@ export default createRouter({
 
       children: [
         {
-          path: "",
-          component: () => import("../components/admin/Main.vue"),
-        },
-        {
-          path: "index",
-          component: () => import("../components/admin/Main.vue"),
-        },
-        {
           path: "user",
-          component: () => import("../components/admin/UserAdmin.vue"),
+          name: "admin-user",
+          component: () => import("../components/admin/User.vue"),
         },
       ],
     },

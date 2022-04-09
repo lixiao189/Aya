@@ -1,6 +1,7 @@
+import { server } from "./ServerVariables";
+
 export const serverConfig = {
-  // urlPrefix: "http://127.0.0.1:4523/mock/620323/api/v1",
-  urlPrefix: "http://localhost:8080/api/v1",
+  urlPrefix: server.protocol + server.hostnameWithPort + server.apiPrefix,
   apiMap: {
     user: {
       register: "/user/register",
@@ -9,6 +10,7 @@ export const serverConfig = {
     },
     admin: {
       login: "/admin/login",
+      user: "/admin/user",
     },
     product: {
       list: "/product/list",
