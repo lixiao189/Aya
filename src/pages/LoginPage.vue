@@ -7,7 +7,6 @@ import { LoginResponse } from "../define/Login";
 import LoginBackground from "../components/login/LoginBackground.vue";
 import Logo from "../components/Logo.vue";
 import Footer from "../components/Footer.vue";
-import Router from "../config/Router";
 
 // 导入第三方组件
 import {
@@ -39,7 +38,7 @@ const loginData = ref({
 // 跳转到注册页面
 function jumpToRegisterPage() {
   setTimeout(() => {
-    Router.push("/register");
+    router.push("/register");
   }, 200);
 }
 
