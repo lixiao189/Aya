@@ -125,7 +125,11 @@ onMounted(() => {
   </n-empty>
 
   <!-- 产品的细节组件 -->
-  <ProductDetail :pid="targetPID" v-model:shouldShowDetail="shouldShowDetail" />
+  <ProductDetail
+    v-if="shouldShowDetail"
+    :pid="targetPID"
+    v-model:shouldShowDetail="shouldShowDetail"
+  />
 
   <Footer />
 </template>
