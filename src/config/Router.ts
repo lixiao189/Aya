@@ -26,8 +26,19 @@ export default createRouter({
         },
         {
           path: "user",
-          name: "admin-user",
           component: () => import("../components/admin/User.vue"),
+        },
+        {
+          path: "product",
+          component: () => import("../components/admin/Product.vue"),
+        },
+        {
+          path: "order",
+          component: () => import("../components/admin/Order.vue"),
+        },
+        {
+          path: "rule",
+          component: () => import("../components/admin/Rule.vue"),
         },
       ],
     },

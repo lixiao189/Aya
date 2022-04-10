@@ -1,6 +1,6 @@
-export interface AdminInfo {
+export type AdminInfo = {
   id: string;
   token: string;
-  role: string;
+  role: string[];
   name: string;
-}
+};
