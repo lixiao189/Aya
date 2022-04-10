@@ -1,7 +1,5 @@
 <script lang="ts" setup>
-import {NCard} from "naive-ui";
-import {NButton, NSpace} from "naive-ui";
-import {NTag} from "naive-ui";
+import {NButton, NSpace, NModal, NTag, NCard, NPopconfirm} from "naive-ui";
 import {serverConfig} from "../../config/Server";
 import {Order, OrderPayResponse} from "../../define/Order"
 import {onMounted, ref} from "vue";
@@ -9,27 +7,33 @@ import axios from "axios";
 import {useMessage} from "naive-ui";
 import {useRouter} from "vue-router";
 import {price2Chinese} from "../../util";
+import {timetrans} from "../../util";
 
 const log = useMessage();
 const router = useRouter();
+
+const showDetail=ref(false);
+const productDetail=ref(null);
 
 const props = defineProps<{
   order: Order;
   index: number;
 }>();
 
+const status=ref(props.order.status);
+
 function payTheOrder() {
   (async () => {
         const token = localStorage.getItem("token") as string;
         const postPayUrl = serverConfig.urlPrefix + serverConfig.apiMap.order.pay;
-
         const respData: OrderPayResponse = (
             await axios.post(postPayUrl + '/' + props.order.oid,null , {
               headers: {Authorization: token},
             })
-        )
+        ).data;
         if (respData.code == 0) {
           log.success("支付成功");
+          status.value='已完成';
         } else {
           log.error("支付失败:" + respData.msg);
         }
@@ -43,12 +47,13 @@ function cancelTheOrder() {
         const postCancelUrl = serverConfig.urlPrefix + serverConfig.apiMap.order.cancel;
 
         const respData: OrderPayResponse = (
-            await axios.post(postCancelUrl + '/' + props.order.oid, {
-              Headers: {Authorization: token},
+            await axios.post(postCancelUrl + '/' + props.order.oid,null, {
+              headers: {Authorization: token},
             })
-        )
+        ).data;
         if (respData.code == 0) {
           log.success("操作成功");
+          status.value='已取消';
         } else {
           log.error("取消订单失败:"+respData.msg);
         }
@@ -56,8 +61,18 @@ function cancelTheOrder() {
   )();
 }
 
-function showProductDetail() {
-
+function showProductDetail(pid: string) {
+  const productDetailUrl = serverConfig.urlPrefix + serverConfig.apiMap.product.detail + "/" + pid;
+  axios.get(productDetailUrl,{
+    headers: {Authorization: localStorage.getItem('token') as string},
+  }).then((resp)=>{
+    if(resp.data.code===0){
+      productDetail.value=resp.data.data;
+      showDetail.value=true;
+    }else{
+      log.error(resp.data.msg);
+    }
+  })
 }
 
 function status2Tag(status: string){
@@ -87,7 +102,7 @@ function status2Tag(status: string){
   <div class="order-card-container">
     <NCard :title="'我的订单 No.'+index" class="order-card">
       <template #header-extra>
-        <NTag :type="status2Tag(order.status)">{{ order.status }}</NTag>
+        <NTag :type="status2Tag(status)">{{ status }}</NTag>
       </template>
       商品编号：{{ order.pid }} <br/>
       创建时间：{{ order.create_time }} <br/>
@@ -96,11 +111,41 @@ function status2Tag(status: string){
         订单金额：￥{{ (order.total_price/100).toFixed(2) }} <br />&emsp;&emsp;&emsp;&emsp;&emsp;<label style="color: #888">{{ price2Chinese(order.total_price/100) }}</label>
       </template>
       <template #action>
-        <NButton class="order-button" @click="showProductDetail">查看商品</NButton>
-        <NButton v-if="order.status==='未支付'" type="info" class="order-button" @click="payTheOrder">支付</NButton>
-        <NButton v-if="order.status==='未支付'" type="error" class="order-button" @click="cancelTheOrder">取消</NButton>
+        <NButton class="order-button" @click="showProductDetail(order.pid)">查看商品</NButton>
+        <NPopconfirm v-if="status==='未支付'"
+            @positive-click="payTheOrder"
+            @negative-click="">
+          <template #trigger>
+            <NButton type="info" class="order-button">支付</NButton>
+          </template>
+          确认支付？
+        </NPopconfirm>
+        <NPopconfirm v-if="status==='未支付'"
+            @positive-click="cancelTheOrder"
+            @negative-click="">
+          <template #trigger>
+            <NButton type="error" class="order-button">取消</NButton>
+          </template>
+          确认取消订单吗？
+        </NPopconfirm>
       </template>
     </NCard>
+    <NModal v-model:show="showDetail">
+      <NCard :title="productDetail.name" style="max-width: 500px">
+        <template #header-extra>
+          库存：{{productDetail.stock}}/金额：{{productDetail.price}}
+        </template>
+        秒杀开始：{{ timetrans(productDetail.begin_time) }} <br/>
+        秒杀结束：{{ timetrans(productDetail.end_time) }} <br/>
+        收益率：{{ (productDetail.money_rate/100).toFixed(2) }}%<br/>
+        单人限购：{{ productDetail.purchase_limit }} 份<br/>
+        存款周期：{{ productDetail.product_term }} <br/>
+        风险等级：{{ productDetail.risk_level }} <br/>
+        起息日：{{ productDetail.value_date }} <br/>
+        到息日：{{ productDetail.due_date }} <br/>
+        结算方式：{{ productDetail.settlement_method }} <br/>
+      </NCard>
+    </NModal>
   </div>
 </template>
 
