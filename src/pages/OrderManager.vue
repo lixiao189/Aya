@@ -1,35 +1,27 @@
 <script lang="ts" setup>
 import Footer from "../components/Footer.vue";
-import topbar from "../components/TopBar.vue";
+import TopBar from "../components/TopBar.vue";
 import OrderCard from "../components/order/OrderCard.vue";
 import { ref } from "vue";
 import { Order,OrderListResponse } from "../define/Order";
-import { NGrid, NGridItem, NSpace,NButton,NEmpty } from "naive-ui";
+import { NGrid, NGridItem, NSpace,NButton,NEmpty,useMessage } from "naive-ui";
 import { onMounted } from "vue";
 import { continueStatement } from "@babel/types";
 import { useRouter } from "vue-router";
 import { serverConfig } from "../config/Server";
 import axios from "axios";
 
+const log = useMessage();
 const router = useRouter(); //使用路由
 function jumpToLogin(){
   router.push("/login");
 }
-const loginSuccess = ref(false);
 const orderList = ref<Order[]>([]);
 
 
 //获取订单列表
-
-
-async function getOrder(): Promise<Order[]> {
-  const token = localStorage.getItem('token');
-  if (token == null){
-    loginSuccess.value = false;
-    return [];
-  }
-
-  const getOrderUrl = 
+async function getOrder(token:string): Promise<Order[]> {
+  const getOrderUrl =
     serverConfig.urlPrefix + serverConfig.apiMap.order.list;
 
   const respData = (
@@ -37,59 +29,37 @@ async function getOrder(): Promise<Order[]> {
       headers: { Authorization: token },
     })
   ).data as OrderListResponse;
-  
-  
+
   if (respData.code == 0) {
-    loginSuccess.value = true;
     return respData.data;
   } else {
-    // 登录没有成功
-    loginSuccess.value = false;
+    // 请求失败
+    log.error(respData.msg);
+    return[];
   }
-  return[]
 }
 
-
-
 onMounted(() => {
+  let token=null;
+  if((token=localStorage.getItem("token"))===null){
+    router.push("/login");
+    return;
+  }
   (async () => {
-    orderList.value = await getOrder();
+    orderList.value = await getOrder(token);
   })();
 });
 </script>
 
 <template>
-  <topbar />
-  <!-- 没有登录显示的空状态 -->
-  <n-empty
-    v-if="!loginSuccess"
-    :size="'huge'"
-    id="not-online-state"
-    description="需要登录开始秒杀"
-  >
-    <template #extra>
-      <n-button
-        color="rgb(193, 46, 50)"
-        round
-        id="login-button"
-        :type="'default'"
-        :size="'large'"
-        @click="jumpToLogin"
-      >
-        点我登录
-      </n-button>
-    </template>
-  </n-empty>
+  <TopBar />
 
-  <NGrid v-else cols="4 1600:5" :x-gap="30">
-    <NGridItem v-for="order in orderList">
+  <NGrid cols="4 1600:5" :x-gap="30">
+    <NGridItem v-for="(order,index) in orderList">
       <OrderCard
         class="order-card"
-        :oid="order['oid']"
-        :status="order['status']"
-        :create_time="order['create_time']"
-        :purchase_number="order['purchase_number']"
-        :total_price="order['total_price']"
+        :order="order"
+        :index="index+1"
       />
     </NGridItem>
   </NGrid>
