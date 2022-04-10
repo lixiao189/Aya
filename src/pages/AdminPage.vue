@@ -2,7 +2,7 @@
 import Footer from "../components/Footer.vue";
 import { AdminInfo } from "../define/Admin";
 import { redirect, renderIcon } from "../util";
-import { RouterView, useRouter } from "vue-router";
+import { RouterView, useRoute, useRouter } from "vue-router";
 import {
   NLayout,
   NLayoutSider,
@@ -13,6 +13,7 @@ import {
   NIcon,
   MenuOption,
   NDropdown,
+  NEmpty,
   DropdownOption,
   useMessage,
 } from "naive-ui";
@@ -24,17 +25,73 @@ import {
   Receipt,
   ChevronDown,
 } from "@vicons/ionicons5";
+import { computed } from "vue";
 
 const router = useRouter();
+const route = useRoute();
+const currentMenuKey = computed(() => route.path.substring(7));
 const msg = useMessage();
 
 const infoString = localStorage.getItem("admin");
 let adminInfo: AdminInfo;
+let menu: MenuOption[] = [
+  {
+    label: "主页",
+    key: "index",
+    icon: renderIcon(Home),
+  },
+];
+let permissionKeys: string[] = ["", "index"];
+const menuKeyValueMap: { [index: string]: MenuOption } = {
+  PRODUCT_ADMIN: {
+    label: "商品管理",
+    key: "product",
+    icon: renderIcon(Cart),
+  },
+  ORDER_ADMIN: {
+    label: "订单管理",
+    key: "order",
+    icon: renderIcon(Clipboard),
+  },
+  USER_ADMIN: {
+    label: "用户管理",
+    key: "user",
+    icon: renderIcon(People),
+  },
+  RULE_ADMIN: {
+    label: "规则管理",
+    key: "rule",
+    icon: renderIcon(Receipt),
+  },
+};
 if (infoString === null) {
   router.push("/admin/login");
 } else {
   adminInfo = JSON.parse(infoString);
+  if (adminInfo.role[0] === "ROOT") {
+    // @root permission
+    for (let v of Object.values(menuKeyValueMap)) {
+      menu.push(v);
+      if (v.key != undefined) permissionKeys.push(v.key.toLocaleString());
+    }
+  } else {
+    // check permission
+    adminInfo.role.map((x) => {
+      const option: MenuOption = menuKeyValueMap[x];
+      menu.push(option);
+      if (option.key != undefined)
+        permissionKeys.push(option.key.toLocaleString());
+    });
+  }
 }
+let access = computed(() => {
+  if (adminInfo.role[0] === "ROOT") return true;
+  for (let v of permissionKeys) {
+    if (v === currentMenuKey.value) return true;
+  }
+  return false;
+});
+console.log(access.value);
 
 const userOptions: DropdownOption[] = [
   {
@@ -43,36 +100,7 @@ const userOptions: DropdownOption[] = [
   },
 ];
 
-const menu: MenuOption[] = [
-  {
-    label: "主页",
-    key: "index",
-    icon: renderIcon(Home),
-  },
-  {
-    label: "商品管理",
-    key: "product",
-    icon: renderIcon(Cart),
-  },
-  {
-    label: "用户管理",
-    key: "user",
-    icon: renderIcon(People),
-  },
-  {
-    label: "订单管理",
-    key: "order",
-    icon: renderIcon(Clipboard),
-  },
-  {
-    label: "规则管理",
-    key: "rule",
-    icon: renderIcon(Receipt),
-  },
-];
-
-function menuOptionHandler(key: string, item: MenuOption) {
-  console.log(key);
+function menuOptionHandler(key: string, _: MenuOption) {
   router.push("/admin/" + key);
 }
 
@@ -118,6 +146,7 @@ function userOptionHandler(key: string | number) {
             :collapsed-width="64"
             :collapsed-icon-size="22"
             :options="menu"
+            :value="currentMenuKey"
             @update:value="menuOptionHandler"
           >
           </NMenu>
@@ -126,7 +155,10 @@ function userOptionHandler(key: string | number) {
           <div id="layout-container">
             <!-- main container -->
             <NLayoutContent id="layout-content">
-              <RouterView />
+              <RouterView v-if="access" />
+              <div v-else id="empty-holder">
+                <NEmpty> 403 </NEmpty>
+              </div>
             </NLayoutContent>
             <NLayoutFooter bordered id="layout-footer">
               <!-- footer -->
@@ -190,6 +222,10 @@ function userOptionHandler(key: string | number) {
   line-height: var(--header-height);
   flex: 0 0 auto;
   cursor: pointer;
+}
+
+#empty-holder {
+  padding: 100px;
 }
 
 .n-icon {
