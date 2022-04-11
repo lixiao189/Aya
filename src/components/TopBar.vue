@@ -42,12 +42,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <NCard class="top-bar">
-    <NSpace justify="space-between">
+    <NSpace justify="space-between" class="top-bar">
       <Logo />
       <div v-if="inLogin" id="profile">
-        <div @click="jumpToOrder" style="border-radius: 17px 0 0 17px;margin-right: 2px;" :class="{'button-active':isInOrderPage}">我的订单</div>
-        <div @click="logout" style="border-radius: 0 17px 17px 0;">退出登录</div>
+        <div @click="jumpToOrder" style="border-radius: 17px 0 0 17px;margin-right: 2px;" :class="{'button-active':isInOrderPage}">&ensp;我的订单</div>
+        <div @click="logout" style="border-radius: 0 17px 17px 0;">退出登录&ensp;</div>
       </div>
       <NButton
         v-if="!inLogin"
@@ -59,14 +58,18 @@ onMounted(() => {
         点击登录
       </NButton>
     </NSpace>
-  </NCard>
 </template>
 
-<style>
-.n-card {
+<style scoped>
+.top-bar{
+  box-sizing: border-box;
   width: 100%;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  height: 78px;
+  padding: 20px 24px 20px 24px;
 }
-
 #profile {
   height: 34px;
 }

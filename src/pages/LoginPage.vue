@@ -21,7 +21,7 @@ import {
 import axios from "axios";
 import { serverConfig } from "../config/Server";
 import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
 // 常量定义
 const dialog = useDialog();
@@ -51,6 +51,15 @@ function flushCaptcha(){
 
 async function login() {
   const loginUrl = serverConfig.urlPrefix + serverConfig.apiMap.user.login;
+  if(loginData.value.username.trim()===''||loginData.value.password.trim()===''||loginData.value.captcha.trim().length!==5){
+    dialog.error({
+      title: "登录错误",
+      content: "无效的输入",
+      positiveText: "确定",
+      onPositiveClick: () => {},
+    });
+    return;
+  }
   const respData: LoginResponse = (await axios.post(loginUrl, loginData.value))
     .data;
 
@@ -67,6 +76,7 @@ async function login() {
       },
     });
   } else {
+    flushCaptcha();
     dialog.error({
       title: "登录错误",
       content: respData.msg,
@@ -75,6 +85,8 @@ async function login() {
     });
   }
 }
+
+onMounted(() => {flushCaptcha();})
 </script>
 
 <template>
@@ -139,7 +151,7 @@ async function login() {
   </div>
 </template>
 
-<style>
+<style scoped>
 #login-page-container {
   position: relative;
 }

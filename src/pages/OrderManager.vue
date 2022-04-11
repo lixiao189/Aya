@@ -3,8 +3,16 @@ import Footer from "../components/Footer.vue";
 import TopBar from "../components/TopBar.vue";
 import OrderCard from "../components/order/OrderCard.vue";
 import { ref } from "vue";
-import { Order,OrderListResponse } from "../define/Order";
-import { NGrid, NGridItem, NSpace,NButton,NEmpty,useMessage } from "naive-ui";
+import { Order, OrderListResponse } from "../define/Order";
+import {
+  NGrid,
+  NGridItem,
+  NSpace,
+  NButton,
+  NEmpty,
+  useMessage,
+  NSpin,
+} from "naive-ui";
 import { onMounted } from "vue";
 import { continueStatement } from "@babel/types";
 import { useRouter } from "vue-router";
@@ -13,35 +21,35 @@ import axios from "axios";
 
 const log = useMessage();
 const router = useRouter(); //使用路由
-function jumpToLogin(){
+function jumpToLogin() {
   router.push("/login");
 }
 const orderList = ref<Order[]>([]);
-
-
+const loading = ref(true);
 //获取订单列表
-async function getOrder(token:string): Promise<Order[]> {
-  const getOrderUrl =
-    serverConfig.urlPrefix + serverConfig.apiMap.order.list;
+async function getOrder(token: string): Promise<Order[]> {
+  const getOrderUrl = serverConfig.urlPrefix + serverConfig.apiMap.order.list;
 
   const respData = (
-    await axios.get(getOrderUrl,{
+    await axios.get(getOrderUrl, {
       headers: { Authorization: token },
     })
   ).data as OrderListResponse;
 
+  loading.value = false;
   if (respData.code == 0) {
     return respData.data;
   } else {
     // 请求失败
     log.error(respData.msg);
-    return[];
+    return [];
   }
 }
 
 onMounted(() => {
-  let token=null;
-  if((token=localStorage.getItem("token"))===null){
+  let token = null;
+  loading.value = true;
+  if ((token = localStorage.getItem("token")) === null) {
     router.push("/login");
     return;
   }
@@ -54,15 +62,15 @@ onMounted(() => {
 <template>
   <TopBar />
 
-  <NGrid cols="4 1600:5" :x-gap="30">
-    <NGridItem v-for="(order,index) in orderList">
-      <OrderCard
-        class="order-card"
-        :order="order"
-        :index="index+1"
-      />
-    </NGridItem>
-  </NGrid>
+  <div style="width: 100%;height: 78px" v-if="loading"></div>
+  <NSpin :show="loading" size="large" stroke="rgb(193, 46, 50)">
+    <NGrid cols="4 1600:5" :x-gap="30">
+      <NGridItem v-for="(order, index) in orderList">
+        <OrderCard class="order-card" :order="order" :index="index + 1" />
+      </NGridItem>
+    </NGrid>
+    <template #description><label style="color: rgb(193, 46, 50);"> 加载订单中 </label></template>
+  </NSpin>
 
   <Footer />
 </template>
