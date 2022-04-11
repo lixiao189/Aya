@@ -42,6 +42,13 @@ function jumpToRegisterPage() {
   }, 200);
 }
 
+const captcha=ref(captchaUrl)
+
+// 刷新验证码
+function flushCaptcha(){
+  captcha.value=captchaUrl+"?r="+Math.random();
+}
+
 async function login() {
   const loginUrl = serverConfig.urlPrefix + serverConfig.apiMap.user.login;
   const respData: LoginResponse = (await axios.post(loginUrl, loginData.value))
@@ -108,8 +115,8 @@ async function login() {
 
         <!-- 验证码区域 -->
         <NSpace>
-          <img id="captcha-img" :src="captchaUrl" />
-          <div id="captcha-refresh">点我刷新验证码</div>
+          <img id="captcha-img" :src="captcha" />
+          <div id="captcha-refresh" @click="flushCaptcha">点击刷新</div>
         </NSpace>
 
         <NSpace id="button-container" vertical :size="'small'">
@@ -159,6 +166,15 @@ async function login() {
 #captcha-refresh {
   margin-top: 12px;
   margin-left: 20px;
+  cursor: pointer;
+}
+
+#captcha-refresh:hover {
+  color: rgb(112, 96, 255);
+}
+
+#captcha-refresh:active {
+  color: rgb(107, 48, 245);
 }
 
 .form-button {
