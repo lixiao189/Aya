@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-// TODO 添加表单输入校验
+
+import { ref } from "vue";
 import TopBar from "../components/TopBar.vue";
 import Footer from "../components/Footer.vue";
 import { serverConfig } from "../config/Server";
-import { Register, RegisterResponse } from "../define/Register";
+import { RegisterResponse } from "../define/Register";
 
 import axios from "axios";
 import {
@@ -21,16 +22,37 @@ import { useRouter } from "vue-router";
 const dialog = useDialog();
 const router = useRouter();
 
+const registerData = ref({
+  username: "",
+  password: "",
+  identity_number: "",
+});
+const confirmPwd = ref("");
+
 async function register() {
-  const reqData: Register = {
-    username: "111",
-    password: "2323",
-    identity_number: "12121",
-  };
+  if (
+    registerData.value.username.trim() === "" ||
+    registerData.value.password.trim() === "" ||
+    registerData.value.identity_number.trim().length !== 18
+  ) {
+    dialog.error({
+      title: "注册失败",
+      content: "无效的输入",
+      positiveText: "确定",
+    });
+    return;
+  }
+  if (registerData.value.password !== confirmPwd.value) {
+    dialog.error({
+      title: "注册失败",
+      content: "两次输入密码不一致",
+      positiveText: "确定",
+    });
+  }
   const respData = (
     await axios.post(
       serverConfig.urlPrefix + serverConfig.apiMap.user.register,
-      reqData
+      registerData.value
     )
   ).data as RegisterResponse;
 
@@ -61,19 +83,33 @@ async function register() {
     <NCard title="用户注册" :size="'large'">
       <NForm>
         <NFormItem label="手机号">
-          <NInput placeholder="请输入你的手机号"></NInput>
+          <NInput
+            placeholder="请输入你的手机号"
+            v-model:value="registerData.username"
+          ></NInput>
         </NFormItem>
 
         <NFormItem label="身份证号">
-          <NInput placeholder="请输入你的身份证号"></NInput>
+          <NInput
+            placeholder="请输入你的身份证号"
+            v-model:value="registerData.identity_number"
+          ></NInput>
         </NFormItem>
 
         <NFormItem label="密码">
-          <NInput placeholder="请输入你的密码" :type="'password'"></NInput>
+          <NInput
+            placeholder="请输入你的密码"
+            :type="'password'"
+            v-model:value="registerData.password"
+          ></NInput>
         </NFormItem>
 
         <NFormItem label="确认密码">
-          <NInput placeholder="请再次输入你的密码" :type="'password'"></NInput>
+          <NInput
+            placeholder="请再次输入你的密码"
+            :type="'password'"
+            v-model:value="confirmPwd"
+          ></NInput>
         </NFormItem>
       </NForm>
 
