@@ -7,7 +7,6 @@ import { Order, OrderListResponse } from "../define/Order";
 import {
   NGrid,
   NGridItem,
-  NSpace,
   NButton,
   NEmpty,
   useMessage,
@@ -21,9 +20,7 @@ import axios from "axios";
 
 const log = useMessage();
 const router = useRouter(); //使用路由
-function jumpToLogin() {
-  router.push("/login");
-}
+
 const orderList = ref<Order[]>([]);
 const loading = ref(true);
 //获取订单列表
@@ -62,13 +59,17 @@ onMounted(() => {
 <template>
   <TopBar />
 
-  <div style="width: 100%;height: 78px" v-if="loading"></div>
   <NSpin :show="loading" size="large" stroke="rgb(193, 46, 50)">
-    <NGrid cols="4 1600:5" :x-gap="30">
+    <NGrid cols="4 1600:5" :x-gap="30" v-if="orderList&&orderList.length!==0">
       <NGridItem v-for="(order, index) in orderList">
         <OrderCard class="order-card" :order="order" :index="index + 1" />
       </NGridItem>
     </NGrid>
+    <NEmpty v-else size="huge" description="您还没有订单哦" style="margin-top: 50px;">
+      <template #extra>
+        <NButton size="small" @click="router.push('/')">前往购买</NButton>
+      </template>
+    </NEmpty>
     <template #description><label style="color: rgb(193, 46, 50);"> 加载订单中 </label></template>
   </NSpin>
 
