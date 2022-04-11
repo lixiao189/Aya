@@ -4,8 +4,8 @@
 import { LoginResponse } from "../define/Login";
 
 // 导入自定义组件
+import TopBar from "../components/TopBar.vue";
 import LoginBackground from "../components/login/LoginBackground.vue";
-import Logo from "../components/Logo.vue";
 import Footer from "../components/Footer.vue";
 
 // 导入第三方组件
@@ -42,16 +42,20 @@ function jumpToRegisterPage() {
   }, 200);
 }
 
-const captcha=ref(captchaUrl)
+const captcha = ref(captchaUrl);
 
 // 刷新验证码
-function flushCaptcha(){
-  captcha.value=captchaUrl+"?r="+Math.random();
+function flushCaptcha() {
+  captcha.value = captchaUrl + "?r=" + Math.random();
 }
 
 async function login() {
   const loginUrl = serverConfig.urlPrefix + serverConfig.apiMap.user.login;
-  if(loginData.value.username.trim()===''||loginData.value.password.trim()===''||loginData.value.captcha.trim().length!==5){
+  if (
+    loginData.value.username.trim() === "" ||
+    loginData.value.password.trim() === "" ||
+    loginData.value.captcha.trim().length !== 5
+  ) {
     dialog.error({
       title: "登录错误",
       content: "无效的输入",
@@ -86,12 +90,14 @@ async function login() {
   }
 }
 
-onMounted(() => {flushCaptcha();})
+onMounted(() => {
+  flushCaptcha();
+});
 </script>
 
 <template>
   <div id="login-page-container">
-    <Logo id="logo-img" />
+    <TopBar :no-button="true" />
 
     <LoginBackground />
     <NCard
@@ -192,9 +198,5 @@ onMounted(() => {flushCaptcha();})
 .form-button {
   width: 100%;
   margin-bottom: 18px;
-}
-
-#logo-img {
-  margin: 20px;
 }
 </style>

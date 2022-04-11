@@ -1,13 +1,10 @@
 <script lang="ts" setup>
-// 导入 util
-import { isOnline } from "../util";
-
 // 引入组件
 import Logo from "./Logo.vue";
 
 // 引入第三方组件
-import { ref, onMounted } from "vue";
-import { NCard, NButton, NSpace } from "naive-ui";
+import { ref, onMounted, withDefaults,defineProps } from "vue";
+import { NButton, NSpace } from "naive-ui";
 import { useRoute, useRouter } from "vue-router";
 import { computed } from "@vue/reactivity";
 
@@ -20,6 +17,10 @@ const isInOrderPage = computed(() => {
   if (route.path == "/order") return true;
   else return false;
 });
+
+const props = withDefaults(defineProps<{noButton:boolean}>(),{
+  noButton:false
+})
 
 // 跳转页面
 function jumpToOrder() {
@@ -44,12 +45,12 @@ onMounted(() => {
 <template>
     <NSpace justify="space-between" class="top-bar">
       <Logo />
-      <div v-if="inLogin" id="profile">
+      <div v-if="!noButton&&inLogin" id="profile">
         <div @click="jumpToOrder" style="border-radius: 17px 0 0 17px;margin-right: 2px;" :class="{'button-active':isInOrderPage}">&ensp;我的订单</div>
         <div @click="logout" style="border-radius: 0 17px 17px 0;">退出登录&ensp;</div>
       </div>
       <NButton
-        v-if="!inLogin"
+        v-if="!noButton&&!inLogin"
         @click="router.push('/login')"
         color="rgb(193, 46, 50)"
         round

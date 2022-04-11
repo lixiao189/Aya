@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 // TODO 添加表单输入校验
-import Logo from "../components/Logo.vue";
+import TopBar from "../components/TopBar.vue";
 import Footer from "../components/Footer.vue";
 import { serverConfig } from "../config/Server";
 import { Register, RegisterResponse } from "../define/Register";
@@ -55,7 +55,7 @@ async function register() {
 </script>
 
 <template>
-  <Logo id="logo-img" />
+  <TopBar :no-button="true" />
 
   <NSpace style="margin-top: 30px; margin-bottom: 55px" :justify="'center'">
     <NCard title="用户注册" :size="'large'">
@@ -88,7 +88,7 @@ async function register() {
   <Footer />
 </template>
 
-<style>
+<style scoped>
 .n-card {
   min-width: 500px;
 }
@@ -97,9 +97,5 @@ async function register() {
   margin-top: 11px;
   margin-bottom: 11px;
   width: 100%;
-}
-
-#logo-img {
-  margin: 20px;
 }
 </style>

@@ -6,7 +6,7 @@ import { RouterLink } from "vue-router";
   <RouterLink to="/"><div id="logo-img" /></RouterLink>
 </template>
 
-<style>
+<style scoped>
 #logo-img {
   width: 294px;
   height: 36px;
