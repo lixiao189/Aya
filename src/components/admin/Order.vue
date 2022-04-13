@@ -3,39 +3,48 @@ import { serverConfig } from "../../config/Server";
 import { AdminInfo } from "../../define/Admin";
 import { AdminOrder, AdminGetOderResponse } from "../../define/AdminOrder";
 import axios from "axios";
-import { NSkeleton, useMessage, NDataTable } from "naive-ui";
-import { ref } from "vue";
+import { NSkeleton, useMessage, NDataTable, NTag } from "naive-ui";
+import { h, ref } from "vue";
 
 const msg = useMessage();
 
 const columns = [
   {
-    title: "OID",
+    title: "订单编号",
     key: "oid",
   },
   {
-    title: "UID",
+    title: "用户编号",
     key: "uid",
   },
   {
-    title: "PID",
+    title: "产品编号",
     key: "pid",
   },
   {
-    title: "Status",
+    title: "状态",
     key: "status",
+    render(row: AdminOrder) {
+      return h(
+        NTag,
+        {
+          type: "info",
+        },
+        row.status
+      );
+    },
   },
   {
-    title: "Total Price",
+    title: "购买数量",
+    key: "purchase_number",
+  },
+  {
+    title: "总价",
     key: "total_price",
   },
   {
-    title: "Create Time",
+    title: "创建时间",
     key: "create_time",
-  },
-  {
-    title: "Purchase Number",
-    key: "purchase_number",
   },
 ];
 

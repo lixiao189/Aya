@@ -44,11 +44,11 @@ if (infoString === null) {
 
 const columns = [
   {
-    title: "UID",
+    title: "用户编号",
     key: "uid",
   },
   {
-    title: "识别码",
+    title: "身份证号",
     key: "identity_number",
   },
   {
