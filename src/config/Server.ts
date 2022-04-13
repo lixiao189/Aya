@@ -11,6 +11,8 @@ export const serverConfig = {
     admin: {
       login: "/admin/login",
       user: "/admin/user",
+      count: "/admin/count",
+      product: "/admin/product",
     },
     product: {
       list: "/product/list",
