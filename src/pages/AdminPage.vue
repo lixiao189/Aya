@@ -25,7 +25,7 @@ import {
   Receipt,
   ChevronDown,
 } from "@vicons/ionicons5";
-import { computed } from "vue";
+import { computed, ComputedRef } from "vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -42,9 +42,10 @@ let menu: MenuOption[] = [
   },
 ];
 let permissionKeys: string[] = ["", "index"];
+let access: ComputedRef<boolean>;
 const menuKeyValueMap: { [index: string]: MenuOption } = {
   PRODUCT_ADMIN: {
-    label: "商品管理",
+    label: "产品管理",
     key: "product",
     icon: renderIcon(Cart),
   },
@@ -83,15 +84,14 @@ if (infoString === null) {
         permissionKeys.push(option.key.toLocaleString());
     });
   }
+  access = computed(() => {
+    if (adminInfo.role[0] === "ROOT") return true;
+    for (let v of permissionKeys) {
+      if (v === currentMenuKey.value) return true;
+    }
+    return false;
+  });
 }
-let access = computed(() => {
-  if (adminInfo.role[0] === "ROOT") return true;
-  for (let v of permissionKeys) {
-    if (v === currentMenuKey.value) return true;
-  }
-  return false;
-});
-console.log(access.value);
 
 const userOptions: DropdownOption[] = [
   {
