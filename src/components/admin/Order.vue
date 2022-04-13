@@ -3,7 +3,19 @@ import { serverConfig } from "../../config/Server";
 import { AdminInfo } from "../../define/Admin";
 import { AdminOrder, AdminGetOderResponse } from "../../define/AdminOrder";
 import axios from "axios";
-import { NSkeleton, useMessage, NDataTable, NTag, NButton } from "naive-ui";
+import {
+  NSkeleton,
+  useMessage,
+  NDataTable,
+  NTag,
+  NDrawer,
+  NDrawerContent,
+  NButton,
+  NSelect,
+  SelectOption,
+  NForm,
+  NFormItem,
+} from "naive-ui";
 import { h, ref } from "vue";
 
 const msg = useMessage();
@@ -53,7 +65,7 @@ const columns = [
       return h(
         NButton,
         {
-          type: "primary",
+          type: "info",
           onClick: () => {
             handleUpdateOperation(row);
           },
@@ -63,6 +75,29 @@ const columns = [
         }
       );
     },
+  },
+];
+
+const statusOptions: SelectOption[] = [
+  {
+    label: "已创建",
+    value: "CREATED",
+  },
+  {
+    label: "已完成",
+    value: "COMPLETED",
+  },
+  {
+    label: "已取消",
+    value: "CANCELLED",
+  },
+  {
+    label: "超时取消",
+    value: "TIMEOUT",
+  },
+  {
+    label: "异常",
+    value: "EXCEPTION",
   },
 ];
 
@@ -81,6 +116,10 @@ if (infoString === null) {
         headers: {
           Authorization: adminInfo.token,
         },
+        // TODO: Add pagination
+        params: {
+          c: 100000,
+        },
       })
     ).data;
     if (response.code === 0) {
@@ -92,8 +131,54 @@ if (infoString === null) {
   })();
 }
 
+const updateDrawerActive = ref(false);
+let updatingRow: AdminOrder;
+const updateFormModel = ref({
+  status: "",
+});
+
 function handleUpdateOperation(row: AdminOrder) {
-  //TODO
+  console.log(row);
+  updatingRow = row;
+  let value;
+  for (let item of statusOptions) {
+    if (item.label == row.status) {
+      value = item.value;
+      break;
+    }
+  }
+  updateFormModel.value.status = value as string;
+  updateDrawerActive.value = true;
+}
+
+const processing = ref(false);
+
+async function handleUpdateSubmit() {
+  processing.value = true;
+  const status = updateFormModel.value.status;
+  const url = `${serverConfig.urlPrefix}${serverConfig.apiMap.admin.order}/${updatingRow.oid}/${status}`;
+  const result: { code: number; msg: string; data: null } = (
+    await axios.post(url, null, {
+      headers: {
+        Authorization: adminInfo.token,
+      },
+    })
+  ).data;
+
+  if (result.code == 0) {
+    let label;
+    for (let item of statusOptions) {
+      if (item.value == status) {
+        label = item.label;
+      }
+    }
+    updatingRow.status = label as string;
+    msg.success("操作成功");
+  } else {
+    msg.error(`操作失败: ${result.msg}`);
+  }
+  updateDrawerActive.value = false;
+  processing.value = false;
 }
 </script>
 
@@ -110,6 +195,33 @@ function handleUpdateOperation(row: AdminOrder) {
       :pagination="{ pageSize: 20 }"
       striped
     />
+    <NDrawer
+      v-model:show="updateDrawerActive"
+      :trap-focus="false"
+      :mask-closable="!processing"
+      to="#layout-container"
+    >
+      <NDrawerContent>
+        <template #header> 修改订单 </template>
+        <template #default>
+          <NForm>
+            <NFormItem label="状态">
+              <NSelect
+                v-model:value="updateFormModel.status"
+                :options="statusOptions"
+                placeholder="请选择状态"
+              />
+            </NFormItem>
+            <NButton
+              type="primary"
+              @click="handleUpdateSubmit"
+              :disabled="processing"
+              >确定</NButton
+            >
+          </NForm>
+        </template>
+      </NDrawerContent>
+    </NDrawer>
   </div>
 </template>
 

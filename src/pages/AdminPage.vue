@@ -45,7 +45,7 @@ let permissionKeys: string[] = ["", "index"];
 let access: ComputedRef<boolean>;
 const menuKeyValueMap: { [index: string]: MenuOption } = {
   PRODUCT_ADMIN: {
-    label: "商品管理",
+    label: "产品管理",
     key: "product",
     icon: renderIcon(Cart),
   },
