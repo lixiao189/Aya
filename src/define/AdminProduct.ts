@@ -5,7 +5,7 @@ export interface AdminProductListReq {
   c: number;
 }
 
-export interface AdminProuductListResponse {
+export interface AdminProductListResponse {
   code: number;
   msg: string;
   data: ProductDetail[];
