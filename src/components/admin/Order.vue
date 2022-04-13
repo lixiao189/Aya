@@ -3,7 +3,7 @@ import { serverConfig } from "../../config/Server";
 import { AdminInfo } from "../../define/Admin";
 import { AdminOrder, AdminGetOderResponse } from "../../define/AdminOrder";
 import axios from "axios";
-import { NSkeleton, useMessage, NDataTable, NTag } from "naive-ui";
+import { NSkeleton, useMessage, NDataTable, NTag, NButton } from "naive-ui";
 import { h, ref } from "vue";
 
 const msg = useMessage();
@@ -30,7 +30,7 @@ const columns = [
         {
           type: "info",
         },
-        row.status
+        { default: () => row.status }
       );
     },
   },
@@ -45,6 +45,24 @@ const columns = [
   {
     title: "创建时间",
     key: "create_time",
+  },
+  {
+    title: "操作",
+    key: "operation",
+    render(row: AdminOrder) {
+      return h(
+        NButton,
+        {
+          type: "primary",
+          onClick: () => {
+            handleUpdateOperation(row);
+          },
+        },
+        {
+          default: () => "修改",
+        }
+      );
+    },
   },
 ];
 
@@ -72,6 +90,10 @@ if (infoString === null) {
       msg.warning("获取订单列表失败: " + response.msg);
     }
   })();
+}
+
+function handleUpdateOperation(row: AdminOrder) {
+  //TODO
 }
 </script>
 
