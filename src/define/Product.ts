@@ -26,7 +26,6 @@ export interface ProductDetail {
   price: number;
   money_rate: number;
   purchase_limit: number;
-  incre_amount: number;
   product_term: string;
   risk_level: string;
   value_date: string;

@@ -45,7 +45,6 @@ const productDetail = ref<ProductDetail>({
   price: 0,
   money_rate: 0,
   purchase_limit: 0,
-  incre_amount: 0,
   product_term: "",
   risk_level: "",
   value_date: "",
