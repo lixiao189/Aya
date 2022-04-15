@@ -1,18 +1,18 @@
 <script lang="ts" setup>
 // 导入配置
-import { serverConfig } from "../../config/Server";
+import { serverConfig } from "../../../config/Server";
 
 // 导入 util
-import { timetrans } from "../../util";
+import { timetrans } from "../../../util";
 
 // 导入定义
-import { ProductDetail } from "../../define/Product";
-import { CountResponse } from "../../define/AdminListCount";
+import { ProductDetail } from "../../../define/Product";
+import { CountResponse } from "../../../define/AdminListCount";
 import {
   AdminProductListResponse,
   AdminProductDeleteResponse,
   AdminProductListReq,
-} from "../../define/AdminProduct";
+} from "../../../define/AdminProduct";
 
 // 导入第三方组件
 import {
@@ -104,8 +104,8 @@ const dialog = useDialog();
 
 // 定义 ref 变量
 const isLoading = ref(true);
-const isUpdating = ref(false);
-const updatedProductID = ref("");
+const isEditing = ref(false);
+const productEditingID = ref("");
 const adminProductList = ref<ProductDetail[]>([]);
 
 // functions
@@ -152,8 +152,8 @@ async function refreshProductList() {
 }
 // 修改商品
 async function updateProduct(pid: string) {
-  isUpdating.value = true;
-  updatedProductID.value = pid;
+  isEditing.value = true;
+  productEditingID.value = pid;
 }
 // 删除商品
 async function deleteProduct(pid: string) {
@@ -221,7 +221,7 @@ onMounted(() => {
 
   <!-- 商品信息提交框 -->
   <NModal
-    v-model:show="isUpdating"
+    v-model:show="isEditing"
     preset="card"
     title="编辑商品信息"
     size="huge"

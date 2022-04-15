@@ -18,27 +18,27 @@ export default createRouter({
       children: [
         {
           path: "",
-          component: () => import("../components/admin/Main.vue"),
+          component: () => import("../components/admin/innerPages/Main.vue"),
         },
         {
           path: "index",
-          component: () => import("../components/admin/Main.vue"),
+          component: () => import("../components/admin/innerPages/Main.vue"),
         },
         {
           path: "user",
-          component: () => import("../components/admin/User.vue"),
+          component: () => import("../components/admin/innerPages/User.vue"),
         },
         {
           path: "product",
-          component: () => import("../components/admin/Product.vue"),
+          component: () => import("../components/admin/innerPages/Product.vue"),
         },
         {
           path: "order",
-          component: () => import("../components/admin/Order.vue"),
+          component: () => import("../components/admin/innerPages/Order.vue"),
         },
         {
           path: "rule",
-          component: () => import("../components/admin/Rule.vue"),
+          component: () => import("../components/admin/innerPages/Rule.vue"),
         },
       ],
     },
