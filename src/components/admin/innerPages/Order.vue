@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { serverConfig } from "../../config/Server";
-import { AdminInfo } from "../../define/Admin";
-import { AdminOrder, AdminGetOderResponse } from "../../define/AdminOrder";
+import { serverConfig } from "../../../config/Server";
+import { AdminInfo } from "../../../define/Admin";
+import { AdminOrder, AdminGetOderResponse } from "../../../define/AdminOrder";
 import axios from "axios";
 import {
   NSkeleton,

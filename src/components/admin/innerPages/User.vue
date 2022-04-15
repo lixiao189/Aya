@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { User, GetUserResponse } from "../../define/User";
-import { AdminInfo } from "../../define/Admin";
-import { serverConfig } from "../../config/Server";
+import { User, GetUserResponse } from "../../../define/User";
+import { AdminInfo } from "../../../define/Admin";
+import { serverConfig } from "../../../config/Server";
 import {
   NDataTable,
   NTag,
