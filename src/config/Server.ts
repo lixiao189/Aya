@@ -14,6 +14,7 @@ export const serverConfig = {
       order: "/admin/order",
       count: "/admin/count",
       product: "/admin/product",
+      rule: "/admin/rule",
     },
     product: {
       list: "/product/list",
