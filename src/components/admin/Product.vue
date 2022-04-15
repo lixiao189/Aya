@@ -1,90 +1,30 @@
 <script lang="ts" setup>
+// 导入配置
+import { serverConfig } from "../../config/Server";
+
+// 导入 util
+import { timetrans } from "../../util";
+
 // 导入定义
 import { ProductDetail } from "../../define/Product";
+import { CountResponse } from "../../define/AdminListCount";
+import {
+  AdminProductListResponse,
+  AdminProductListReq,
+} from "../../define/AdminProduct";
 
 // 导入第三方组件
-import { NSkeleton, NButton, NDataTable, DataTableColumn } from "naive-ui";
-import { ref, h } from "vue";
+import {
+  NSkeleton,
+  NButton,
+  NDataTable,
+  DataTableColumn,
+  NModal,
+} from "naive-ui";
+import { ref, h, onMounted } from "vue";
+import axios from "axios";
 
-// 定义 ref 变量
-const isLoading = ref(true);
-const adminProductList = ref<ProductDetail[]>([
-  {
-    due_date: "2007-11-01",
-    purchase_limit: 17,
-    name: "基应况委",
-    product_term: "ullamco",
-    begin_time: 399137680166,
-    money_rate: 72,
-    settlement_method: "Lorem pariatur",
-    stock: 1,
-    pid: "91",
-    value_date: "2008-12-15",
-    end_time: 1442232919817,
-    risk_level: "sint",
-    price: 74,
-  },
-  {
-    due_date: "1998-05-24",
-    price: 92,
-    begin_time: 509165495059,
-    pid: "999",
-    purchase_limit: 85,
-    value_date: "2020-02-04",
-    risk_level: "mollit aliquip eu",
-    stock: 4,
-    money_rate: 82,
-    name: "业资有还林大",
-    end_time: 202815672579,
-    product_term: "quis",
-    settlement_method: "non est enim consequat",
-  },
-  {
-    due_date: "1998-05-24",
-    price: 92,
-    begin_time: 509165495059,
-    pid: "92",
-    purchase_limit: 85,
-    value_date: "2020-02-04",
-    risk_level: "mollit aliquip eu",
-    stock: 4,
-    money_rate: 82,
-    name: "业资有还林大",
-    end_time: 202815672579,
-    product_term: "quis",
-    settlement_method: "non est enim consequat",
-  },
-  {
-    due_date: "1998-05-24",
-    price: 92,
-    begin_time: 509165495059,
-    pid: "93",
-    purchase_limit: 85,
-    value_date: "2020-02-04",
-    risk_level: "mollit aliquip eu",
-    stock: 4,
-    money_rate: 82,
-    name: "业资有还林大",
-    end_time: 202815672579,
-    product_term: "quis",
-    settlement_method: "non est enim consequat",
-  },
-  {
-    due_date: "1998-05-24",
-    price: 92,
-    begin_time: 509165495059,
-    pid: "94",
-    purchase_limit: 85,
-    value_date: "2020-02-04",
-    risk_level: "mollit aliquip eu",
-    stock: 4,
-    money_rate: 82,
-    name: "业资有还林大",
-    end_time: 202815672579,
-    product_term: "quis",
-    settlement_method: "non est enim consequat",
-  },
-]);
+// 表单列定义
 const listColumns: Array<DataTableColumn> = [
   {
     title: "名称",
@@ -101,10 +41,16 @@ const listColumns: Array<DataTableColumn> = [
   {
     title: "开始时间",
     key: "begin_time",
+    render(row) {
+      return h("div", {}, timetrans(row.begin_time as number));
+    },
   },
   {
     title: "结束时间",
     key: "end_time",
+    render(row) {
+      return h("div", {}, timetrans(row.begin_time as number));
+    },
   },
   {
     title: "操作",
@@ -117,7 +63,7 @@ const listColumns: Array<DataTableColumn> = [
             type: "info",
             secondary: true,
             size: "small",
-            onClick: () => modifyProduct(row.pid as number),
+            onClick: () => updateProduct(row.pid as string),
           },
           { default: () => "修改" }
         ),
@@ -128,7 +74,7 @@ const listColumns: Array<DataTableColumn> = [
             secondary: true,
             size: "small",
             style: "margin-left: 20px",
-            onclick: () => deleteProduct(row.pid as number),
+            onclick: () => deleteProduct(row.pid as string),
           },
           { default: () => "删除" }
         ),
@@ -138,15 +84,60 @@ const listColumns: Array<DataTableColumn> = [
   },
 ];
 
-// 事件 function
+// 定义 ref 变量
+const isLoading = ref(true);
+const isUpdating = ref(false);
+const updatedProductID = ref("");
+const adminProductList = ref<ProductDetail[]>([]);
+
+// functions
+// 获取产品列表
+async function getProducts(): Promise<ProductDetail[]> {
+  const token = localStorage.getItem("token") as string;
+  const getProductsCountUrl =
+    serverConfig.urlPrefix + serverConfig.apiMap.admin.count;
+  const getProductsUrl =
+    serverConfig.urlPrefix + serverConfig.apiMap.admin.product;
+
+  const getProductsCountResp: CountResponse = (
+    await axios.get(getProductsCountUrl + "/product", {
+      headers: { Authorization: token },
+    })
+  ).data;
+
+  const getProductsData: AdminProductListReq = {
+    p: 1,
+    c: getProductsCountResp.data,
+  };
+  const getProductsResp: AdminProductListResponse = (await axios.get(
+    getProductsUrl,
+    {
+      params: getProductsData,
+      headers: { Authorization: token },
+    }
+  )).data;
+
+  return getProductsResp.data;
+}
+// 添加产品
 async function addProduct() {}
+// 刷新列表
 async function refreshProductList() {}
-async function modifyProduct(pid: number) {
+// 修改商品
+async function updateProduct(pid: string) {
+  isUpdating.value = true;
+  updatedProductID.value = pid;
+}
+// 删除商品
+async function deleteProduct(pid: string) {
   console.log(pid);
 }
-async function deleteProduct(pid: number) {
-  console.log(pid);
-}
+
+onMounted(() => {
+  (async () => {
+    adminProductList.value = await getProducts();
+  })();
+});
 
 isLoading.value = false; // debug
 </script>
@@ -165,8 +156,9 @@ isLoading.value = false; // debug
       id="admin-product-add-button"
       :type="'default'"
       @click="refreshProductList"
-      >刷新列表</NButton
     >
+      刷新列表
+    </NButton>
   </div>
 
   <!-- 列表内容容器 -->
@@ -190,6 +182,17 @@ isLoading.value = false; // debug
       />
     </div>
   </div>
+
+  <NModal
+    v-model:show="isUpdating"
+    preset="card"
+    title="卡片预设"
+    size="huge"
+    style="width: 600px"
+  >
+    内容
+    <template #footer> 尾部 </template>
+  </NModal>
 </template>
 
 <style>
