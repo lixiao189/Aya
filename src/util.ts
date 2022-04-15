@@ -53,43 +53,66 @@ export function renderIcon(icon: Component) {
 }
 
 export function price2Chinese(n: number) {
-  const fraction = ['角', '分'];
-  const digit = [
-    '零', '壹', '贰', '叁', '肆',
-    '伍', '陆', '柒', '捌', '玖'
-  ];
+  const fraction = ["角", "分"];
+  const digit = ["零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖"];
   const unit = [
-    ['元', '万', '亿'],
-    ['', '拾', '佰', '仟']
+    ["元", "万", "亿"],
+    ["", "拾", "佰", "仟"],
   ];
-  let head = n < 0 ? '欠' : '';
+  let head = n < 0 ? "欠" : "";
   n = Math.abs(n);
-  let s = '';
+  let s = "";
   for (let i = 0; i < fraction.length; i++) {
-    s += (digit[Math.floor(shiftRight(n,1+i)) % 10] + fraction[i]).replace(/零./, '');
+    s += (digit[Math.floor(shiftRight(n, 1 + i)) % 10] + fraction[i]).replace(
+      /零./,
+      ""
+    );
   }
-  s = s || '整';
+  s = s || "整";
   n = Math.floor(n);
   for (let i = 0; i < unit[0].length && n > 0; i++) {
-    let p = '';
+    let p = "";
     for (let j = 0; j < unit[1].length && n > 0; j++) {
       p = digit[n % 10] + unit[1][j] + p;
       n = Math.floor(shiftLeft(n, 1));
     }
-    s = p.replace(/(零.)*零$/, '').replace(/^$/, '零') + unit[0][i] + s;
+    s = p.replace(/(零.)*零$/, "").replace(/^$/, "零") + unit[0][i] + s;
   }
-  return "人民币" + head + s.replace(/(零.)*零元/, '元')
-      .replace(/(零.)+/g, '零')
-      .replace(/^整$/, '零元整');
+  return (
+    "人民币" +
+    head +
+    s
+      .replace(/(零.)*零元/, "元")
+      .replace(/(零.)+/g, "零")
+      .replace(/^整$/, "零元整")
+  );
 }
 
 // 向右移位
-function shiftRight(n: number, digit: number){
-  let value = n.toString().split('e');
-  return +(value[0] + 'e' + (value[1] ? (+value[1] + digit) : digit))
+function shiftRight(n: number, digit: number) {
+  let value = n.toString().split("e");
+  return +(value[0] + "e" + (value[1] ? +value[1] + digit : digit));
 }
 // 向左移位
-function shiftLeft(n: number, digit: number){
-  let value = n.toString().split('e');
-  return +(value[0] + 'e' + (value[1] ? (+value[1] - digit) : -digit))
+function shiftLeft(n: number, digit: number) {
+  let value = n.toString().split("e");
+  return +(value[0] + "e" + (value[1] ? +value[1] - digit : -digit));
+}
+
+export function getDateToday(): string {
+  let date = new Date(); //当前时间
+  let year = date.getFullYear(); //返回指定日期的年份
+  let month = repair(date.getMonth() + 1); //月
+  let day = repair(date.getDate()); //日
+
+  //当前时间
+  return year + "-" + month + "-" + day;
+}
+
+function repair(i: number) {
+  if (i >= 0 && i <= 9) {
+    return "0" + i;
+  } else {
+    return i;
+  }
 }

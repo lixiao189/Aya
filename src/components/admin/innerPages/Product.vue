@@ -3,7 +3,7 @@
 import { serverConfig } from "../../../config/Server";
 
 // 导入 util
-import { timetrans } from "../../../util";
+import { timetrans, getDateToday } from "../../../util";
 
 // 导入定义
 import { ProductDetail } from "../../../define/Product";
@@ -26,7 +26,6 @@ import {
   NModal,
   useMessage,
   useDialog,
-  NDialog,
 } from "naive-ui";
 import { ref, h, onMounted } from "vue";
 import axios from "axios";
@@ -70,7 +69,7 @@ const listColumns: Array<DataTableColumn> = [
             type: "info",
             secondary: true,
             size: "small",
-            onClick: () => updateProduct(row.pid as string),
+            onClick: () => showUpdateProductModal(row.pid as string),
           },
           { default: () => "修改" }
         ),
@@ -108,9 +107,25 @@ const dialog = useDialog();
 
 // 定义 ref 变量
 const isLoading = ref(true);
-const isEditing = ref(false);
+const isCreating = ref(false);
+const isUpdating = ref(false);
 const productEditingID = ref("");
 const adminProductList = ref<ProductDetail[]>([]);
+const productEditedData = ref<ProductDetail>({
+  pid: "",
+  begin_time: 0,
+  end_time: 0,
+  name: "",
+  stock: 0,
+  price: 0,
+  money_rate: 0,
+  purchase_limit: 0,
+  product_term: "",
+  risk_level: "低",
+  value_date: getDateToday(),
+  due_date: getDateToday(),
+  settlement_method: "到期付息",
+});
 
 // functions
 // 获取产品列表
@@ -148,16 +163,18 @@ async function getProducts(): Promise<ProductDetail[]> {
 
   return getProductsResp.data;
 }
-// 添加产品
-async function addProduct() {}
 // 刷新列表
 async function refreshProductList() {
   adminProductList.value = await getProducts();
 }
 // 修改商品
-async function updateProduct(pid: string) {
-  isEditing.value = true;
+function showUpdateProductModal(pid: string) {
+  isUpdating.value = true;
   productEditingID.value = pid;
+}
+// 添加产品
+function showAddProductModal() {
+  isCreating.value = true;
 }
 // 删除商品
 async function deleteProduct(pid: string) {
@@ -174,6 +191,14 @@ async function deleteProduct(pid: string) {
     message.success("商品删除成功");
   }
 }
+// 提交添加任务
+async function submitAdding() {
+  console.log(productEditedData.value); // debug
+}
+// 提交修改任务
+async function submitUpdating() {
+  console.log(productEditedData.value); // debug
+}
 
 // 生命周期函数
 onMounted(() => {
@@ -189,7 +214,7 @@ onMounted(() => {
     <NButton
       id="admin-product-add-button"
       :type="'primary'"
-      @click="addProduct"
+      @click="showAddProductModal"
     >
       添加商品
     </NButton>
@@ -224,15 +249,32 @@ onMounted(() => {
     </div>
   </div>
 
-  <!-- 商品信息提交框 -->
+  <!-- 商品信息创建提交框 -->
   <NModal
     id="admin-product-update-container"
-    v-model:show="isEditing"
+    v-model:show="isCreating"
     size="huge"
     preset="card"
-    title="编辑商品信息"
+    title="创建商品"
   >
-    <EditProduct />
+    <EditProduct v-model:product-data="productEditedData" />
+    <div id="admin-product-update-button-container">
+      <NButton :type="'primary'" @click="submitAdding">创建商品</NButton>
+    </div>
+  </NModal>
+
+  <!-- 商品信息更新提交框 -->
+  <NModal
+    id="admin-product-update-container"
+    v-model:show="isUpdating"
+    size="huge"
+    preset="card"
+    title="修改商品"
+  >
+    <EditProduct v-model:product-data="productEditedData" />
+    <div id="admin-product-update-button-container">
+      <NButton :type="'primary'" @click="submitUpdating">修改商品</NButton>
+    </div>
   </NModal>
 </template>
 
