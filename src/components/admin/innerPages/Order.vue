@@ -158,7 +158,7 @@ async function handleUpdateSubmit() {
   const status = updateFormModel.value.status;
   const url = `${serverConfig.urlPrefix}${serverConfig.apiMap.admin.order}/${updatingRow.oid}/${status}`;
   const result: { code: number; msg: string; data: null } = (
-    await axios.post(url, null, {
+    await axios.put(url, null, {
       headers: {
         Authorization: adminInfo.token,
       },
