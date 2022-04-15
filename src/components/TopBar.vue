@@ -3,7 +3,7 @@
 import Logo from "./Logo.vue";
 
 // 引入第三方组件
-import { ref, onMounted, withDefaults,defineProps } from "vue";
+import { ref, onMounted, withDefaults, defineProps } from "vue";
 import { NButton, NSpace } from "naive-ui";
 import { useRoute, useRouter } from "vue-router";
 import { computed } from "@vue/reactivity";
@@ -18,9 +18,9 @@ const isInOrderPage = computed(() => {
   else return false;
 });
 
-const props = withDefaults(defineProps<{noButton:boolean}>(),{
-  noButton:false
-})
+withDefaults(defineProps<{ noButton: boolean }>(), {
+  noButton: false,
+});
 
 // 跳转页面
 function jumpToOrder() {
@@ -29,7 +29,7 @@ function jumpToOrder() {
 
 // 退出登录
 function logout() {
-  localStorage.removeItem('token');
+  localStorage.removeItem("token");
   router.push("/login");
 }
 
@@ -43,26 +43,32 @@ onMounted(() => {
 </script>
 
 <template>
-    <NSpace justify="space-between" class="top-bar">
-      <Logo />
-      <div v-if="!noButton&&inLogin" id="profile">
-        <div @click="jumpToOrder" style="border-radius: 17px 0 0 17px;margin-right: 2px;" :class="{'button-active':isInOrderPage}">&ensp;我的订单</div>
-        <div @click="logout" style="border-radius: 0 17px 17px 0;">退出登录&ensp;</div>
-      </div>
-      <NButton
-        v-if="!noButton&&!inLogin"
-        @click="router.push('/login')"
-        color="rgb(193, 46, 50)"
-        round
-        :ghost="false"
+  <NSpace justify="space-between" class="top-bar">
+    <Logo />
+    <div v-if="!noButton && inLogin" id="profile">
+      <div
+        @click="jumpToOrder"
+        style="margin-right: 10px"
+        :class="{ 'button-active': isInOrderPage }"
       >
-        点击登录
-      </NButton>
-    </NSpace>
+        我的订单
+      </div>
+      <div @click="logout" style="">退出登录</div>
+    </div>
+    <NButton
+      v-if="!noButton && !inLogin"
+      @click="router.push('/login')"
+      color="rgb(193, 46, 50)"
+      round
+      :ghost="false"
+    >
+      点击登录
+    </NButton>
+  </NSpace>
 </template>
 
 <style scoped>
-.top-bar{
+.top-bar {
   box-sizing: border-box;
   width: 100%;
   border-bottom: 1px solid #eee;
@@ -75,7 +81,7 @@ onMounted(() => {
   height: 34px;
 }
 
-#profile > div{
+#profile > div {
   box-sizing: border-box;
   display: inline-block;
   width: 80px;
