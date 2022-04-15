@@ -69,7 +69,8 @@ const listColumns: Array<DataTableColumn> = [
             type: "info",
             secondary: true,
             size: "small",
-            onClick: () => showUpdateProductModal(row.pid as string),
+            onClick: () =>
+              showUpdateProductModal(row as unknown as ProductDetail),
           },
           { default: () => "修改" }
         ),
@@ -109,7 +110,6 @@ const dialog = useDialog();
 const isLoading = ref(true);
 const isCreating = ref(false);
 const isUpdating = ref(false);
-const productEditingID = ref("");
 const adminProductList = ref<ProductDetail[]>([]);
 const productEditedData = ref<ProductDetail>({
   pid: "",
@@ -168,9 +168,11 @@ async function refreshProductList() {
   adminProductList.value = await getProducts();
 }
 // 修改商品
-function showUpdateProductModal(pid: string) {
+function showUpdateProductModal(productData: ProductDetail) {
   isUpdating.value = true;
-  productEditingID.value = pid;
+  productEditedData.value = productData;
+
+  const productID = productData.pid;
 }
 // 添加产品
 function showAddProductModal() {

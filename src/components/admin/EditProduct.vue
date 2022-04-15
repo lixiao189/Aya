@@ -120,13 +120,12 @@ const purchaseOptions = [
         />
       </NFormItemGridItem>
 
-      <NFormItemGridItem
-        v-model:value="innerProductData.end_time"
-        @input="$emit('update:productData', innerProductData)"
-        :span="12"
-        label="结束秒杀日期"
-      >
-        <NDatePicker type="datetime" />
+      <NFormItemGridItem :span="12" label="结束秒杀日期">
+        <NDatePicker
+          v-model:value="innerProductData.end_time"
+          @input="$emit('update:productData', innerProductData)"
+          type="datetime"
+        />
       </NFormItemGridItem>
 
       <NFormItemGridItem :span="12" label="起息日期">
