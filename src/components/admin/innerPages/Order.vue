@@ -20,6 +20,38 @@ import { h, ref } from "vue";
 
 const msg = useMessage();
 
+const loading = ref(true);
+const infoString = localStorage.getItem("admin");
+let adminInfo: AdminInfo;
+let orders = ref<AdminOrder[]>([]);
+if (infoString === null) {
+  msg.error("无登录凭证");
+} else {
+  adminInfo = JSON.parse(infoString);
+  getOrderList();
+}
+
+async function getOrderList() {
+  const url = serverConfig.urlPrefix + serverConfig.apiMap.admin.order;
+  const response: AdminGetOderResponse = (
+    await axios.get(url, {
+      headers: {
+        Authorization: adminInfo.token,
+      },
+      // TODO: Add pagination
+      params: {
+        c: 100000,
+      },
+    })
+  ).data;
+  if (response.code === 0) {
+    orders.value = response.data;
+    loading.value = false;
+  } else {
+    msg.warning("获取订单列表失败: " + response.msg);
+  }
+}
+
 const columns = [
   {
     title: "订单编号",
@@ -101,36 +133,6 @@ const statusOptions: SelectOption[] = [
   },
 ];
 
-const loading = ref(true);
-const infoString = localStorage.getItem("admin");
-let adminInfo: AdminInfo;
-let orders = ref<AdminOrder[]>([]);
-if (infoString === null) {
-  msg.error("无登录凭证");
-} else {
-  (async () => {
-    adminInfo = JSON.parse(infoString);
-    const url = serverConfig.urlPrefix + serverConfig.apiMap.admin.order;
-    const response: AdminGetOderResponse = (
-      await axios.get(url, {
-        headers: {
-          Authorization: adminInfo.token,
-        },
-        // TODO: Add pagination
-        params: {
-          c: 100000,
-        },
-      })
-    ).data;
-    if (response.code === 0) {
-      orders.value = response.data;
-      loading.value = false;
-    } else {
-      msg.warning("获取订单列表失败: " + response.msg);
-    }
-  })();
-}
-
 const updateDrawerActive = ref(false);
 let updatingRow: AdminOrder;
 const updateFormModel = ref({
@@ -138,7 +140,6 @@ const updateFormModel = ref({
 });
 
 function handleUpdateOperation(row: AdminOrder) {
-  console.log(row);
   updatingRow = row;
   let value;
   for (let item of statusOptions) {
