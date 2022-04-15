@@ -10,3 +10,9 @@ export interface AdminProductListResponse {
   msg: string;
   data: ProductDetail[];
 }
+
+export interface AdminProductDeleteResponse {
+  code: number;
+  msg: string;
+  data: null;
+}

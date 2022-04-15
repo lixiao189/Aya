@@ -10,6 +10,7 @@ import { ProductDetail } from "../../define/Product";
 import { CountResponse } from "../../define/AdminListCount";
 import {
   AdminProductListResponse,
+  AdminProductDeleteResponse,
   AdminProductListReq,
 } from "../../define/AdminProduct";
 
@@ -20,6 +21,8 @@ import {
   NDataTable,
   DataTableColumn,
   NModal,
+  useMessage,
+  useDialog,
 } from "naive-ui";
 import { ref, h, onMounted } from "vue";
 import axios from "axios";
@@ -74,7 +77,18 @@ const listColumns: Array<DataTableColumn> = [
             secondary: true,
             size: "small",
             style: "margin-left: 20px",
-            onclick: () => deleteProduct(row.pid as string),
+            onclick: () => {
+              dialog.error({
+                title: "警告",
+                content: "确定删除商品？",
+                positiveText: "确定",
+                negativeText: "取消",
+                onPositiveClick: () => {
+                  deleteProduct(row.pid as string);
+                },
+                onNegativeClick: () => {},
+              });
+            },
           },
           { default: () => "删除" }
         ),
@@ -83,6 +97,10 @@ const listColumns: Array<DataTableColumn> = [
     },
   },
 ];
+
+// 定义 const 常量
+const message = useMessage();
+const dialog = useDialog();
 
 // 定义 ref 变量
 const isLoading = ref(true);
@@ -93,6 +111,9 @@ const adminProductList = ref<ProductDetail[]>([]);
 // functions
 // 获取产品列表
 async function getProducts(): Promise<ProductDetail[]> {
+  // 开始加载
+  isLoading.value = true;
+
   const token = localStorage.getItem("token") as string;
   const getProductsCountUrl =
     serverConfig.urlPrefix + serverConfig.apiMap.admin.count;
@@ -109,20 +130,26 @@ async function getProducts(): Promise<ProductDetail[]> {
     p: 1,
     c: getProductsCountResp.data,
   };
-  const getProductsResp: AdminProductListResponse = (await axios.get(
-    getProductsUrl,
-    {
+  const getProductsResp: AdminProductListResponse = (
+    await axios.get(getProductsUrl, {
       params: getProductsData,
       headers: { Authorization: token },
-    }
-  )).data;
+    })
+  ).data;
+
+  // 加载结束
+  setTimeout(() => {
+    isLoading.value = false;
+  }, 200);
 
   return getProductsResp.data;
 }
 // 添加产品
 async function addProduct() {}
 // 刷新列表
-async function refreshProductList() {}
+async function refreshProductList() {
+  adminProductList.value = await getProducts();
+}
 // 修改商品
 async function updateProduct(pid: string) {
   isUpdating.value = true;
@@ -130,7 +157,18 @@ async function updateProduct(pid: string) {
 }
 // 删除商品
 async function deleteProduct(pid: string) {
-  console.log(pid);
+  const adminProductUrl =
+    serverConfig.urlPrefix + serverConfig.apiMap.admin.product;
+  const token = localStorage.getItem("token") as string;
+  const deleteProductResp: AdminProductDeleteResponse = (
+    await axios.delete(adminProductUrl + "/" + pid, {
+      headers: { Authorization: token },
+    })
+  ).data;
+
+  if (deleteProductResp.code == 200) {
+    message.success("商品删除成功");
+  }
 }
 
 onMounted(() => {
@@ -138,8 +176,6 @@ onMounted(() => {
     adminProductList.value = await getProducts();
   })();
 });
-
-isLoading.value = false; // debug
 </script>
 
 <template>
@@ -183,15 +219,20 @@ isLoading.value = false; // debug
     </div>
   </div>
 
+  <!-- 商品信息提交框 -->
   <NModal
     v-model:show="isUpdating"
     preset="card"
-    title="卡片预设"
+    title="编辑商品信息"
     size="huge"
     style="width: 600px"
   >
     内容
-    <template #footer> 尾部 </template>
+    <template #footer>
+      <div id="admin-product-update-button-container">
+        <NButton :type="'primary'">提交</NButton>
+      </div>
+    </template>
   </NModal>
 </template>
 
@@ -214,5 +255,9 @@ isLoading.value = false; // debug
   align-items: centePr;
   justify-content: center;
   flex-direction: center;
+}
+
+#admin-product-update-button-container {
+  text-align: center;
 }
 </style>
