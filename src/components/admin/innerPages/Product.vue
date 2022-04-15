@@ -14,6 +14,9 @@ import {
   AdminProductListReq,
 } from "../../../define/AdminProduct";
 
+// 导入自定义组件
+import EditProduct from "../EditProduct.vue";
+
 // 导入第三方组件
 import {
   NSkeleton,
@@ -23,6 +26,7 @@ import {
   NModal,
   useMessage,
   useDialog,
+  NDialog,
 } from "naive-ui";
 import { ref, h, onMounted } from "vue";
 import axios from "axios";
@@ -171,6 +175,7 @@ async function deleteProduct(pid: string) {
   }
 }
 
+// 生命周期函数
 onMounted(() => {
   (async () => {
     adminProductList.value = await getProducts();
@@ -221,18 +226,13 @@ onMounted(() => {
 
   <!-- 商品信息提交框 -->
   <NModal
+    id="admin-product-update-container"
     v-model:show="isEditing"
+    size="huge"
     preset="card"
     title="编辑商品信息"
-    size="huge"
-    style="width: 600px"
   >
-    内容
-    <template #footer>
-      <div id="admin-product-update-button-container">
-        <NButton :type="'primary'">提交</NButton>
-      </div>
-    </template>
+    <EditProduct />
   </NModal>
 </template>
 
@@ -255,6 +255,11 @@ onMounted(() => {
   align-items: centePr;
   justify-content: center;
   flex-direction: center;
+}
+
+#admin-product-update-container {
+  width: 1100px;
+  margin: 20px auto;
 }
 
 #admin-product-update-button-container {
