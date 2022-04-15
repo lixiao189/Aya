@@ -164,7 +164,7 @@ onMounted(() => {
 
 #login-form {
   position: absolute;
-  top: 165px;
+  top: 125px;
   right: 100px;
 }
 

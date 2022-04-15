@@ -77,6 +77,7 @@ onMounted(() => {
   height: 78px;
   padding: 20px 24px 20px 24px;
 }
+
 #profile {
   height: 34px;
 }
