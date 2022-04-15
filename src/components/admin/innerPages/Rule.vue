@@ -16,10 +16,19 @@ import {
   NButton,
   NDescriptions,
   NDescriptionsItem,
+  NSpace,
+  NIcon,
+  NForm,
+  NFormItem,
+  NInput,
+  FormInst,
+  FormRules,
 } from "naive-ui";
+import { Add } from "@vicons/ionicons5";
 import { h, ref } from "vue";
 import axios from "axios";
 import { CreateRowProps } from "naive-ui/lib/data-table/src/interface";
+import { result } from "lodash";
 
 const msg = useMessage();
 const dialog = useDialog();
@@ -174,7 +183,103 @@ async function getRule(rid: string) {
         ),
     });
   } else {
-    msg.error("获取规则信息失败");
+    msg.error("获取规则信息失败: " + response.msg);
+  }
+}
+
+const addRuleFormRef = ref<FormInst | null>(null);
+const addRuleFormModel = ref({
+  name: "",
+  expression: "",
+});
+const addRuleFormValidationRules: FormRules = {
+  name: [
+    {
+      required: true,
+      message: "请输入名称",
+    },
+  ],
+  expression: [
+    {
+      required: true,
+      message: "请输入表达式",
+    },
+  ],
+};
+
+function onAddRuleButtonClick() {
+  // TODO: refactor to NModal
+  // create input form dialog
+  const d = dialog.info({
+    title: "创建规则",
+    positiveText: "确定",
+    onPositiveClick: addRule,
+    content: () =>
+      h(
+        NForm,
+        {
+          ref: addRuleFormRef,
+          model: addRuleFormModel,
+          rules: addRuleFormValidationRules,
+        },
+        {
+          default: () => [
+            h(
+              NFormItem,
+              {
+                label: "名称",
+                path: "name",
+              },
+              {
+                default: () =>
+                  h(NInput, {
+                    value: addRuleFormModel.value.name,
+                    placeholder: "输入名称",
+                    onInput: (e) => {
+                      addRuleFormModel.value.name = e;
+                    },
+                  }),
+              }
+            ),
+            h(
+              NFormItem,
+              {
+                label: "表达式",
+                path: "expression",
+              },
+              {
+                default: () =>
+                  h(NInput, {
+                    value: addRuleFormModel.value.expression,
+                    placeholder: "输入表达式",
+                    onInput: (e) => {
+                      addRuleFormModel.value.expression = e;
+                    },
+                  }),
+              }
+            ),
+          ],
+        }
+      ),
+  });
+}
+
+async function addRule() {
+  const url = serverConfig.urlPrefix + serverConfig.apiMap.admin.rule;
+  const result: { code: number; msg: string; data: null } = (
+    await axios.post(url, addRuleFormModel.value, {
+      headers: {
+        Authorization: adminInfo.token,
+      },
+    })
+  ).data;
+  if (result.code === 0) {
+    addRuleFormModel.value = { name: "", expression: "" };
+    msg.success("创建成功");
+    return true;
+  } else {
+    msg.error("创建失败: " + result.msg);
+    return false;
   }
 }
 </script>
@@ -185,15 +290,23 @@ async function getRule(rid: string) {
       <NSkeleton text :repeat="5" />
       <NSkeleton text style="width: 60%" />
     </div>
-    <NDataTable
-      v-else
-      :data="rules"
-      :columns="columns"
-      :row-props="rowProps"
-      :pagination="{ pageSize: 20 }"
-      striped
-    >
-    </NDataTable>
+    <div v-else>
+      <NSpace vertical>
+        <NButton style="float: right" @click="onAddRuleButtonClick" circle>
+          <template #icon>
+            <NIcon><Add /></NIcon>
+          </template>
+        </NButton>
+        <NDataTable
+          :data="rules"
+          :columns="columns"
+          :row-props="rowProps"
+          :pagination="{ pageSize: 20 }"
+          striped
+        >
+        </NDataTable>
+      </NSpace>
+    </div>
   </div>
 </template>
 
