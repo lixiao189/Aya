@@ -1,6 +1,7 @@
 import { NIcon } from "naive-ui";
 import { Component, computed, h } from "vue";
 import { Router } from "vue-router";
+import { ProductDetail } from "./define/Product";
 
 /* 导出 computed 变量 */
 // 如果有 token 那么以前登录过, 判断为在线状态
@@ -115,4 +116,9 @@ function repair(i: number) {
   } else {
     return i;
   }
+}
+
+export function transProductEditedData(source: ProductDetail) {
+  source.price *= 100;
+  source.money_rate *= 100;
 }

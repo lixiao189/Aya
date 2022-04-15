@@ -11,7 +11,7 @@ export interface AdminProductListResponse {
   data: ProductDetail[];
 }
 
-export interface AdminProductDeleteResponse {
+export interface AdminProductResponse {
   code: number;
   msg: string;
   data: null;

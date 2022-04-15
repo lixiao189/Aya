@@ -3,14 +3,14 @@
 import { serverConfig } from "../../../config/Server";
 
 // 导入 util
-import { timetrans, getDateToday } from "../../../util";
+import { timetrans, getDateToday, transProductEditedData } from "../../../util";
 
 // 导入定义
 import { ProductDetail } from "../../../define/Product";
 import { CountResponse } from "../../../define/AdminListCount";
 import {
   AdminProductListResponse,
-  AdminProductDeleteResponse,
+  AdminProductResponse,
   AdminProductListReq,
 } from "../../../define/AdminProduct";
 
@@ -171,8 +171,6 @@ async function refreshProductList() {
 function showUpdateProductModal(productData: ProductDetail) {
   isUpdating.value = true;
   productEditedData.value = productData;
-
-  const productID = productData.pid;
 }
 // 添加产品
 function showAddProductModal() {
@@ -183,7 +181,7 @@ async function deleteProduct(pid: string) {
   const adminProductUrl =
     serverConfig.urlPrefix + serverConfig.apiMap.admin.product;
   const token = localStorage.getItem("token") as string;
-  const deleteProductResp: AdminProductDeleteResponse = (
+  const deleteProductResp: AdminProductResponse = (
     await axios.delete(adminProductUrl + "/" + pid, {
       headers: { Authorization: token },
     })
@@ -195,11 +193,46 @@ async function deleteProduct(pid: string) {
 }
 // 提交添加任务
 async function submitAdding() {
-  console.log(productEditedData.value); // debug
+  transProductEditedData(productEditedData.value);
+  const adminProductUrl =
+    serverConfig.urlPrefix + serverConfig.apiMap.admin.product;
+  const token = localStorage.getItem("token") as string;
+
+  const respData: AdminProductResponse = (
+    await axios.post(adminProductUrl, productEditedData.value, {
+      headers: { Authorization: token },
+    })
+  ).data;
+
+  if (respData.code) {
+    message.success("添加成功");
+  } else {
+    message.error(respData.msg);
+  }
+  isCreating.value = false;
 }
 // 提交修改任务
 async function submitUpdating() {
-  console.log(productEditedData.value); // debug
+  transProductEditedData(productEditedData.value);
+  const adminProductUrl =
+    serverConfig.urlPrefix +
+    serverConfig.apiMap.admin.product +
+    "/" +
+    productEditedData.value.pid;
+  const token = localStorage.getItem("token") as string;
+
+  const respData: AdminProductResponse = (
+    await axios.put(adminProductUrl, productEditedData.value, {
+      headers: { Authorization: token },
+    })
+  ).data;
+
+  if (respData.code) {
+    message.success("修改成功");
+  } else {
+    message.error(respData.msg);
+  }
+  isCreating.value = false;
 }
 
 // 生命周期函数
