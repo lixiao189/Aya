@@ -48,12 +48,12 @@ onMounted(() => {
     <div v-if="!noButton && inLogin" id="profile">
       <div
         @click="jumpToOrder"
-        style="margin-right: 10px"
+        style="margin-right: 10px; border-radius: 3px"
         :class="{ 'button-active': isInOrderPage }"
       >
         我的订单
       </div>
-      <div @click="logout" style="">退出登录</div>
+      <div @click="logout" style="border-radius: 3px">退出登录</div>
     </div>
     <NButton
       v-if="!noButton && !inLogin"
