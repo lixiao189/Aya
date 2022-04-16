@@ -206,6 +206,7 @@ async function submitAdding() {
 
   if (respData.code) {
     message.success("添加成功");
+    location.reload(); // 刷新页面
   } else {
     message.error(respData.msg);
   }
@@ -229,6 +230,7 @@ async function submitUpdating() {
 
   if (respData.code) {
     message.success("修改成功");
+    location.reload(); // 刷新页面
   } else {
     message.error(respData.msg);
   }
