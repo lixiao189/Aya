@@ -52,6 +52,27 @@ async function getOrderList() {
   }
 }
 
+function status2Tag(status: string) {
+  switch (status) {
+    case "未支付": {
+      return "info";
+    }
+    case "超时取消": {
+      return "warning";
+    }
+    case "已取消": {
+      return "warning";
+    }
+    case "已完成": {
+      return "success";
+    }
+    case "订单异常": {
+      return "error";
+    }
+  }
+  return "default";
+}
+
 const columns = [
   {
     title: "订单编号",
@@ -72,7 +93,7 @@ const columns = [
       return h(
         NTag,
         {
-          type: "info",
+          type: status2Tag(row.status),
         },
         { default: () => row.status }
       );
