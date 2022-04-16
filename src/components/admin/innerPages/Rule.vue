@@ -134,8 +134,8 @@ const columns = [
 async function operationEnableHandler(row: Rule) {
   const url = `${serverConfig.urlPrefix}${serverConfig.apiMap.admin.rule}/${row.rid}`;
   const result: { code: number; msg: string; data: null } = (
-    await axios.put(url, {
-      Headers: {
+    await axios.put(url,null, {
+     headers: {
         Authorization: adminInfo.token,
       },
     })
@@ -250,6 +250,7 @@ function onAddRuleButtonClick() {
               {
                 default: () =>
                   h(NInput, {
+                    type: "textarea",
                     value: addRuleFormModel.value.expression,
                     placeholder: "输入表达式",
                     onInput: (e) => {
@@ -313,5 +314,10 @@ async function addRule() {
 <style>
 #main-container {
   margin: 20px;
+}
+.n-descriptions-table-content {
+  background-color: black;
+  color: wheat !important;
+  padding: 10px !important;
 }
 </style>

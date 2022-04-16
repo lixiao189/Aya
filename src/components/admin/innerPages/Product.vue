@@ -29,6 +29,8 @@ import {
 } from "naive-ui";
 import { ref, h, onMounted } from "vue";
 import axios from "axios";
+import { useRouter } from "vue-router";
+import { AdminInfo } from "../../../define/Admin";
 
 // 表单列定义
 const listColumns: Array<DataTableColumn> = [
@@ -55,7 +57,7 @@ const listColumns: Array<DataTableColumn> = [
     title: "结束时间",
     key: "end_time",
     render(row) {
-      return h("div", {}, timetrans(row.begin_time as number));
+      return h("div", {}, timetrans(row.end_time as number));
     },
   },
   {
@@ -105,6 +107,7 @@ const listColumns: Array<DataTableColumn> = [
 // 定义 const 常量
 const message = useMessage();
 const dialog = useDialog();
+const router = useRouter();
 
 // 定义 ref 变量
 const isLoading = ref(true);
@@ -127,13 +130,14 @@ const productEditedData = ref<ProductDetail>({
   settlement_method: "到期付息",
 });
 
+let adminToken="";
+
 // functions
 // 获取产品列表
 async function getProducts(): Promise<ProductDetail[]> {
   // 开始加载
   isLoading.value = true;
 
-  const token = localStorage.getItem("token") as string;
   const getProductsCountUrl =
     serverConfig.urlPrefix + serverConfig.apiMap.admin.count;
   const getProductsUrl =
@@ -141,7 +145,7 @@ async function getProducts(): Promise<ProductDetail[]> {
 
   const getProductsCountResp: CountResponse = (
     await axios.get(getProductsCountUrl + "/product", {
-      headers: { Authorization: token },
+      headers: { Authorization: adminToken },
     })
   ).data;
 
@@ -152,7 +156,7 @@ async function getProducts(): Promise<ProductDetail[]> {
   const getProductsResp: AdminProductListResponse = (
     await axios.get(getProductsUrl, {
       params: getProductsData,
-      headers: { Authorization: token },
+      headers: { Authorization: adminToken },
     })
   ).data;
 
@@ -180,15 +184,16 @@ function showAddProductModal() {
 async function deleteProduct(pid: string) {
   const adminProductUrl =
     serverConfig.urlPrefix + serverConfig.apiMap.admin.product;
-  const token = localStorage.getItem("token") as string;
   const deleteProductResp: AdminProductResponse = (
     await axios.delete(adminProductUrl + "/" + pid, {
-      headers: { Authorization: token },
+      headers: { Authorization: adminToken },
     })
   ).data;
 
-  if (deleteProductResp.code == 200) {
-    message.success("商品删除成功");
+  if (deleteProductResp.code == 0) {
+    message.success("删除成功");
+  }else{
+    message.error("删除失败:"+deleteProductResp.msg);
   }
 }
 // 提交添加任务
@@ -196,11 +201,10 @@ async function submitAdding() {
   transProductEditedData(productEditedData.value);
   const adminProductUrl =
     serverConfig.urlPrefix + serverConfig.apiMap.admin.product;
-  const token = localStorage.getItem("token") as string;
 
   const respData: AdminProductResponse = (
     await axios.post(adminProductUrl, productEditedData.value, {
-      headers: { Authorization: token },
+      headers: { Authorization: adminToken },
     })
   ).data;
 
@@ -219,15 +223,14 @@ async function submitUpdating() {
     serverConfig.apiMap.admin.product +
     "/" +
     productEditedData.value.pid;
-  const token = localStorage.getItem("token") as string;
 
   const respData: AdminProductResponse = (
     await axios.put(adminProductUrl, productEditedData.value, {
-      headers: { Authorization: token },
+      headers: { Authorization: adminToken },
     })
   ).data;
 
-  if (respData.code) {
+  if (respData.code===0) {
     message.success("修改成功");
   } else {
     message.error(respData.msg);
@@ -237,6 +240,14 @@ async function submitUpdating() {
 
 // 生命周期函数
 onMounted(() => {
+  let infoString=localStorage.getItem("admin");
+  if(infoString===null){
+    router.push("/admin/login");
+    return;
+  }
+  let adminInfo:AdminInfo = JSON.parse(infoString);
+  adminToken=adminInfo.token;
+
   (async () => {
     adminProductList.value = await getProducts();
   })();
